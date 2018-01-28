@@ -9,15 +9,18 @@ module.exports = {
   },
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'build')
+    path: path.resolve(__dirname, 'build'),
+    publicPath: '/'
   },
   plugins: [
     new CleanWebpackPlugin(['build']),
-    new CopyWebpackPlugin([{
-      from: 'public/firebase-messaging-sw.js'
-    }]),
+    new CopyWebpackPlugin([
+      {
+        from: 'public/firebase-messaging-sw.js'
+      }
+    ]),
     new HtmlWebpackPlugin({
-      title: 'Production',
+      title: 'Certificate circuit',
       template: 'public/index.html'
     })
   ],
@@ -26,27 +29,16 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              '@babel/preset-stage-0',
-              '@babel/preset-react',
-              [
-                '@babel/preset-env', {
-                targets: {
-                  browsers: ['last 2 versions']
-                }
-              }]
-            ]
-          }
-        }
-      }]
+        use: 'babel-loader'
+      },
+      {
+        test: /\.(png|jpg|gif|eot|svg|ttf|woff|otf)$/,
+        use: 'file-loader'
+      }
+    ]
   },
   resolve: {
-    modules: [
-      'node_modules/',
-      'app/'
-    ]
+    extensions: ['.js', '.json', '.scss'],
+    modules: ['node_modules/', 'app/']
   }
 }

@@ -4,7 +4,6 @@ import registerMessaging from '../requestMessagingPermission'
 
 export const ANONYMOUS = 'ANONYMOUS'
 export const ATTEMPTING_LOGIN = 'ATTEMPTING_LOGIN'
-export const SIGN_IN = 'SIGN_IN'
 export const SIGNED_IN = 'SIGNED_IN'
 export const SIGN_OUT = 'SIGN_OUT'
 
@@ -31,7 +30,7 @@ export const signOut = () => {
 }
 
 const signedIn = (user) => ({
-  type: SIGN_IN,
+  type: SIGNED_IN,
   email: user.email,
   displayName: user.displayName,
   photoURL: user.photoURL,
@@ -42,15 +41,21 @@ const signedOut = () => ({
   type: SIGN_OUT
 })
 
+export const selectors = {
+  isAuthenticated(state) {
+    return state.auth.status === SIGNED_IN
+  }
+}
+
 export const listenToAuthChanges = () => (dispatch) => {
   auth.onAuthStateChanged((user) => {
     if (user) {
       dispatch(signedIn(user))
 
-      registerMessaging(user)
+      /*registerMessaging(user)
 
       usersRef.child(user.uid).
-        set(pick(user, ['displayName', 'photoURL', 'email', 'uid']))
+        set(pick(user, ['displayName', 'photoURL', 'email', 'uid']))*/
     } else {
       dispatch(signedOut())
     }

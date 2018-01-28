@@ -1,8 +1,7 @@
 import { ADD_USER } from 'actions/users'
-import initialState from 'initialState'
 import { clone, extend } from 'lodash'
 
-export default (state = initialState.users, action) => {
+export default (state = {}, action) => {
   switch (action.type) {
     case ADD_USER:
       return extend(clone(state), { [action.payload.uid]: {

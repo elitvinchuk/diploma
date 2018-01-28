@@ -1,7 +1,14 @@
-import { ANONYMOUS, ATTEMPTING_LOGIN, SIGN_IN, SIGN_OUT, SIGNED_IN } from 'actions/auth'
-import initialState from 'initialState'
+import { ANONYMOUS, ATTEMPTING_LOGIN, SIGN_OUT, SIGNED_IN } from 'actions/auth'
 
-export default (state = initialState.auth, action) => {
+const initialState = {
+  status: ANONYMOUS,
+  email: null,
+  displayName: null,
+  photoURL: null,
+  uid: null
+}
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case ATTEMPTING_LOGIN:
       return {
@@ -17,13 +24,14 @@ export default (state = initialState.auth, action) => {
         uid: null
       }
 
-    case SIGN_IN: {
+    case SIGNED_IN: {
       return {
         status: SIGNED_IN,
         email: action.email,
         displayName: action.displayName,
         photoURL: action.photoURL,
-        uid: action.uid
+        uid: action.uid,
+        redirectToReferrer: true
       }
     }
 
