@@ -1,15 +1,17 @@
+import { func } from 'prop-types'
 import React from 'react'
-import { auth, googleAuthProvider } from '../firebase'
 
-const SignIn = () =>
+const SignIn = ({signIn}) =>
   <button
     type="button"
     className="btn btn-info btn-lg"
-    onClick={() => auth.signInWithPopup(googleAuthProvider)}
+    onClick={signIn}
   >
     Войти
   </button>
 
-SignIn.propTypes = {}
+SignIn.propTypes = {
+  signIn: func.isRequired
+}
 
 export default SignIn
