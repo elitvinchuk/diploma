@@ -13,7 +13,7 @@ const App = () => (
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <Switch>
-        <Route path={r.tutors.login} component={Login}/>
+        <Route exact path={r.tutors.login} component={Login}/>
         <PrivateRoute path={r.tutors.index} component={TutorsHome}/>
       </Switch>
     </ConnectedRouter>

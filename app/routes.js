@@ -1,6 +1,9 @@
+const tutorsPrefix = '/tutor'
+
 export default {
   tutors: {
-    index: '/tutors',
-    login: '/tutors/login'
+    index: `${tutorsPrefix}`,
+    login: `${tutorsPrefix}/login`,
+    application: `${tutorsPrefix}/application/:id`
   }
 }

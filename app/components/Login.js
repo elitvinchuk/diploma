@@ -7,7 +7,7 @@ import routes from 'routes'
 
 const Login = ({ auth, location, signIn }) =>
   <div>
-    {auth.redirectToReferrer && <Redirect to={location.state || routes.tutors.index} />}
+    {auth.redirectToReferrer && <Redirect to={location.state.from || routes.tutors.index} />}
 
     {/*<form className='form-signin' onSubmit={signIn}>
       <img className='mb-4' src='https://getbootstrap.com/assets/brand/bootstrap-solid.svg' alt="" width='72' height='72'>

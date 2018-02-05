@@ -1,15 +1,25 @@
-import { signOut } from 'actions/auth'
-import { connect } from 'react-redux'
-import HomeComponent from './components/Home'
+import React from 'react'
+import { Route } from 'react-router'
+import r from 'routes'
+import { Application, ApplicationsList, Header } from './components'
 
-const mapStateToProps = state => ({
-  auth: state.auth
-})
+const Home = () =>
+  <>
+    <Header />
 
-const mapDispatchToProps = dispatch => ({
-  signOut() {
-    dispatch(signOut())
-  }
-})
+    <div className="container">
+      {/*<nav aria-label="breadcrumb">
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item"><a href="#">Home</a></li>
+          <li className="breadcrumb-item"><a href="#">Library</a></li>
+          <li className="breadcrumb-item active" aria-current="page">Data</li>
+        </ol>
+      </nav>*/}
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeComponent)
+      <Route exact path={r.tutors.index} component={ApplicationsList}/>
+
+      <Route path={r.tutors.application} component={Application} />
+    </div>
+  </>
+
+export default Home
