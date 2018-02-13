@@ -1,7 +1,6 @@
 module.exports = {
   plugins: [
     'react-hot-loader/babel',
-    'transform-class-properties'
   ],
   presets: [
     '@babel/env',

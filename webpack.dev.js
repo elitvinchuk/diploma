@@ -9,19 +9,22 @@ module.exports = merge(common, {
     historyApiFallback: true
   },
   module: {
-    rules: [{
-      test: /\.scss$/,
-      use: [
-        {
-          loader: 'style-loader'
-        }, {
-          loader: 'css-loader'
-        }, {
-          loader: 'sass-loader'
-        }]
-    }]
+    rules: [
+      {
+        test: /\.scss$/,
+        use: [
+          {
+            loader: 'style-loader'
+          },
+          {
+            loader: 'css-loader'
+          },
+          {
+            loader: 'sass-loader'
+          }
+        ]
+      }
+    ]
   },
-  plugins: [
-    new webpack.NamedModulesPlugin()
-  ]
+  plugins: [new webpack.NamedModulesPlugin()]
 })

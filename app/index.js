@@ -5,7 +5,4 @@ import 'styles'
 
 const root = document.getElementById('root')
 
-render(
-  <Wrapper />,
-  root
-)
+render(<Wrapper />, root)
