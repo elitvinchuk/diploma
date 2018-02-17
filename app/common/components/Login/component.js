@@ -16,7 +16,7 @@ const LoginComponent = ({
 }) => (
   <div className="form-signin-wrapper">
     {auth.redirectToReferrer && (
-      <Redirect to={location.state ? location.state.from : routes.index} />
+      <Redirect to={location.state ? location.state.from : routes.applications} />
     )}
     <form className="form-signin" onSubmit={handleSubmit}>
       <div className="text-center mb-4">

@@ -39,7 +39,7 @@ const HeaderComponent = ({ auth, children, signOut }) => (
             aria-haspopup="true"
             aria-expanded="false"
           >
-            {auth.displayName || 'Пользователь'}
+            {auth.displayName || 'Преподаватель'}
           </a>
           <div
             className="dropdown-menu dropdown-menu-right"
