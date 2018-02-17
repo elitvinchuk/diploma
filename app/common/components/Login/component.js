@@ -16,11 +16,19 @@ const LoginComponent = ({
 }) => (
   <div className="form-signin-wrapper">
     {auth.redirectToReferrer && (
-      <Redirect to={location.state ? location.state.from : routes.applications} />
+      <Redirect
+        to={location.state ? location.state.from : routes.applications}
+      />
     )}
     <form className="form-signin" onSubmit={handleSubmit}>
       <div className="text-center mb-4">
-        <img className="mb-4" src={Logo} alt="" width="72" height="72" />
+        <img
+          className="mb-4 rounded-circle"
+          src={Logo}
+          alt=""
+          width="112"
+          height="112"
+        />
         <h1 className="mb-3">Представьтесь, пожалуйста</h1>
       </div>
 

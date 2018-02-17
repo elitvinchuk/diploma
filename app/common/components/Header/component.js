@@ -1,11 +1,11 @@
 import React from 'react'
-import { func, object } from 'prop-types'
+import { func, node, object } from 'prop-types'
 import Logo from 'common/assets/logo.png'
 
 const HeaderComponent = ({ auth, children, signOut }) => (
   <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
     <a className="navbar-brand" href="#">
-      <img src={Logo} height={30} />
+      <img src={Logo} className="rounded-circle" height={30} width={30} />
     </a>
     <button
       className="navbar-toggler"
@@ -19,9 +19,7 @@ const HeaderComponent = ({ auth, children, signOut }) => (
       <span className="navbar-toggler-icon" />
     </button>
     <div className="collapse navbar-collapse" id="navbarText">
-      <ul className="navbar-nav mr-auto">
-        {children}
-      </ul>
+      <ul className="navbar-nav mr-auto">{children}</ul>
       <ul className="navbar-nav">
         <li className="nav-item">
           <a className="nav-link" href="#" title="Уведомления">
@@ -61,6 +59,7 @@ const HeaderComponent = ({ auth, children, signOut }) => (
 
 HeaderComponent.propTypes = {
   auth: object.isRequired,
+  children: node,
   signOut: func.isRequired
 }
 

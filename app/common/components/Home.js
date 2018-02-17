@@ -23,7 +23,7 @@ const Home = () => (
 
     <div className="container">
       <Switch>
-        <Route path={r.applications} component={ApplicationsList} />
+        <Route exact path={r.applications} component={ApplicationsList} />
         <Route path={r.application} component={Application} />
         <Route component={NotFound} />
       </Switch>
