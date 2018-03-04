@@ -1,4 +1,5 @@
 import firebase from 'firebase'
+import 'firebase/firestore'
 
 const config = {
   apiKey: 'AIzaSyCEpdv7CU7W5ZX7bGJoiYjFm9wSNfxm5ic',
@@ -11,10 +12,11 @@ const config = {
 
 firebase.initializeApp(config)
 
+const firestore = firebase.firestore()
+
 export default firebase
 
-export const database = firebase.database()
 export const auth = firebase.auth()
-export const storage = firebase.storage()
+
+export const usersRef = firestore.collection('users')
 export const googleAuthProvider = new firebase.auth.GoogleAuthProvider()
-export const messaging = firebase.messaging()

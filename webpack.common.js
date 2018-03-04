@@ -1,6 +1,5 @@
 const path = require('path')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
@@ -14,11 +13,6 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(['build']),
-    new CopyWebpackPlugin([
-      {
-        from: 'public/firebase-messaging-sw.js'
-      }
-    ]),
     new HtmlWebpackPlugin({
       title: 'Certificate circuit',
       template: 'public/index.html'

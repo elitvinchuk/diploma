@@ -1,17 +1,12 @@
-import { actions } from 'common/redux/auth'
+import { actions, constants } from 'common/redux/auth'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { reduxForm, SubmissionError } from 'redux-form'
 import LoginComponent from './component'
 
 const mapStateToProps = state => ({
-  auth: state.auth
-})
-
-const mapDispatchToProps = dispatch => ({
-  signInWithGoogle() {
-    dispatch(actions.signInWithGoogle())
-  }
+  auth: state.auth,
+  attemptingLogin: state.auth.status === constants.ATTEMPTING_LOGIN
 })
 
 const formName = 'tutorLogin'
@@ -19,7 +14,7 @@ const formName = 'tutorLogin'
 const reduxFormConfig = {
   form: formName,
   onSubmit: ({ email, password }, dispatch) =>
-    dispatch(actions.signInWithCredential(email, password)).catch(error => {
+    dispatch(actions.signInWithCredentials(email, password)).catch(error => {
       const errorMap = {
         'auth/invalid-email': {
           email: 'Неверный адрес электронной почты'
@@ -37,7 +32,5 @@ const reduxFormConfig = {
 }
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(
-    reduxForm(reduxFormConfig)(LoginComponent)
-  )
+  connect(mapStateToProps)(reduxForm(reduxFormConfig)(LoginComponent))
 )

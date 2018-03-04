@@ -1,6 +1,7 @@
-import { auth, googleAuthProvider } from '../../firebase'
+import { auth, usersRef } from 'firebaseConfig'
+import { pick } from 'lodash'
 
-const constants = {
+export const constants = {
   ANONYMOUS: 'ANONYMOUS',
   ATTEMPTING_LOGIN: 'ATTEMPTING_LOGIN',
   SIGNED_IN: 'SIGNED_IN',
@@ -8,19 +9,12 @@ const constants = {
 }
 
 export const actions = {
-  signInWithCredential: (email, password) => dispatch => {
+  signInWithCredentials: (email, password) => dispatch => {
     dispatch({
       type: constants.ATTEMPTING_LOGIN
     })
 
     return auth.signInWithEmailAndPassword(email, password)
-  },
-  signInWithGoogle: () => dispatch => {
-    dispatch({
-      type: constants.ATTEMPTING_LOGIN
-    })
-
-    auth.signInWithPopup(googleAuthProvider)
   },
 
   signOut: () => dispatch => {
@@ -32,32 +26,37 @@ export const actions = {
   },
 
   listenToAuthChanges: () => dispatch => {
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        dispatch(signedIn(user))
+    auth.onAuthStateChanged(auth => {
+      if (auth) {
+        const userRef = usersRef.doc(auth.uid)
 
-        /*registerMessaging(user)
+        userRef.get().then(doc => {
+          const user = doc.data()
 
-        usersRef.child(user.uid).
-          set(pick(user, ['displayName', 'photoURL', 'email', 'uid']))*/
+          if (user) {
+            dispatch({
+              type: constants.SIGNED_IN,
+              payload: user
+            })
+          } else {
+            const newUserData = pick(auth, ['displayName', 'email', 'photoURL'])
+
+            userRef.set(newUserData, { merge: true }).then(() => {
+              dispatch({
+                type: constants.SIGNED_IN,
+                payload: newUserData
+              })
+            })
+          }
+        })
       } else {
-        dispatch(signedOut())
+        dispatch({
+          type: constants.SIGN_OUT
+        })
       }
     })
   }
 }
-
-const signedIn = user => ({
-  type: constants.SIGNED_IN,
-  email: user.email,
-  displayName: user.displayName,
-  photoURL: user.photoURL,
-  uid: user.uid
-})
-
-const signedOut = () => ({
-  type: constants.SIGN_OUT
-})
 
 export const selectors = {
   isAuthenticated(state) {
@@ -66,11 +65,7 @@ export const selectors = {
 }
 
 const initialState = {
-  status: constants.ANONYMOUS,
-  email: null,
-  displayName: null,
-  photoURL: null,
-  uid: null
+  status: constants.ANONYMOUS
 }
 
 export default (state = initialState, action) => {
@@ -80,25 +75,18 @@ export default (state = initialState, action) => {
         status: constants.ATTEMPTING_LOGIN
       }
 
-    case constants.SIGN_OUT:
-      return {
-        status: constants.ANONYMOUS,
-        email: null,
-        displayName: null,
-        photoURL: null,
-        uid: null
-      }
-
     case constants.SIGNED_IN: {
       return {
+        ...action.payload,
         status: constants.SIGNED_IN,
-        email: action.email,
-        displayName: action.displayName,
-        photoURL: action.photoURL,
-        uid: action.uid,
         redirectToReferrer: true
       }
     }
+
+    case constants.SIGN_OUT:
+      return {
+        status: constants.ANONYMOUS
+      }
 
     default:
       return state
