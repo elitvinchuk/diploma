@@ -21,12 +21,12 @@ const HeaderComponent = ({ auth, children, signOut }) => (
     <div className="collapse navbar-collapse" id="navbarText">
       <ul className="navbar-nav mr-auto">{children}</ul>
       <ul className="navbar-nav">
-        <li className="nav-item">
+        {/*<li className="nav-item">
           <a className="nav-link" href="#" title="Уведомления">
             <span className="oi oi-bell" />
             <span className="badge badge-pill badge-success ml-2">3</span>
           </a>
-        </li>
+        </li>*/}
         <li className="nav-item dropdown">
           <a
             className="nav-link dropdown-toggle"

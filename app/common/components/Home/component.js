@@ -1,41 +1,19 @@
-// @flow
-
 import UsersList from 'admin/components/UsersList'
-import { ErrorBoundary, Header, NotFound } from 'common/components'
+import { ErrorBoundary, Header, NotFound, PrivateLink } from 'common/components'
 import React from 'react'
-import { NavLink, Route, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import routes from 'routes'
 import { Application, ApplicationsList } from 'tutors'
 
-type authProps = {
-  displayName: string,
-  email: string,
-  photoURL: string,
-  roles: string[]
-}
-
-// todo: wrap navlinks and routes with roles separation wrapper
+// todo: wrap routes with roles separation wrapper
 // todo: fix errorBoundary
-// todo: fix types
 
-const Home = ({ auth: { roles } }: authProps) => (
+const Home = () => (
   <ErrorBoundary>
     <Header>
-      {roles.includes('tutor') && (
-        <NavLink to={routes.applications} className="nav-item nav-link">
-          Обращения
-        </NavLink>
-      )}
-      {roles.includes('tutor') && (
-        <NavLink to={routes.calendar} className="nav-item nav-link">
-          Календарь
-        </NavLink>
-      )}
-      {roles.includes('admin') && (
-        <NavLink to={routes.users} className="nav-item nav-link">
-          Пользователи
-        </NavLink>
-      )}
+      <PrivateLink to={routes.applications} role="tutor" label="Обращения" />
+      <PrivateLink to={routes.calendar} role="tutor" label="Календарь" />
+      <PrivateLink to={routes.users} role="admin" label="Пользователи" />
     </Header>
 
     <div className="container">

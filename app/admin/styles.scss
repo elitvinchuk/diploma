@@ -1,0 +1,14 @@
+.search-field {
+  flex-grow: 1;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.type-filter button:first-child {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.users-table thead th {
+  border-top: none;
+}

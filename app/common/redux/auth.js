@@ -39,7 +39,11 @@ export const actions = {
               payload: user
             })
           } else {
-            const newUserData = pick(auth, ['displayName', 'email', 'photoURL'])
+            // todo: add last sign in time
+            const newUserData = {
+              ...pick(auth, ['displayName', 'email', 'photoURL']),
+              roles: []
+            }
 
             userRef.set(newUserData, { merge: true }).then(() => {
               dispatch({

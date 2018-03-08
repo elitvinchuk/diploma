@@ -3,7 +3,6 @@ $icon-font-path: '~open-iconic/font/fonts/';
 @import "~open-iconic/font/css/open-iconic-bootstrap";
 
 // Reboot
-@import "~bootstrap/scss/functions";
 @import "variables";
 @import "~bootstrap/scss/mixins";
 @import "~bootstrap/scss/reboot";
@@ -13,7 +12,7 @@ $icon-font-path: '~open-iconic/font/fonts/';
 @import "~bootstrap/scss/images";
 //@import "~bootstrap/scss/code";
 @import "~bootstrap/scss/grid";
-//@import "~bootstrap/scss/tables";
+@import "~bootstrap/scss/tables";
 @import "~bootstrap/scss/forms";
 @import "~bootstrap/scss/buttons";
 @import "~bootstrap/scss/transitions";
@@ -47,17 +46,4 @@ body,
   height: 100%;
 }
 
-@keyframes spin {
-  from {
-    transform:rotate(0deg);
-  }
-  to {
-    transform:rotate(360deg);
-  }
-}
-
-.spinning {
-  animation: spin 4s linear infinite;
-}
-
-//@import "../tutors/views/Home/styles";
+@import "../admin/styles";

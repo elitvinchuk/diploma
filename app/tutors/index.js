@@ -1,2 +1,2 @@
-export { default as Application } from './components/Application'
-export { default as ApplicationsList } from './components/ApplicationsList'
+export Application from './components/Application'
+export ApplicationsList from './components/ApplicationsList'

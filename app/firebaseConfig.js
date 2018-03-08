@@ -12,11 +12,9 @@ const config = {
 
 firebase.initializeApp(config)
 
+export const auth = firebase.auth()
 const firestore = firebase.firestore()
 
-export default firebase
-
-export const auth = firebase.auth()
-
 export const usersRef = firestore.collection('users')
-export const googleAuthProvider = new firebase.auth.GoogleAuthProvider()
+
+export default firebase

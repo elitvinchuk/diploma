@@ -2,6 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 class ErrorBoundary extends React.Component {
+  static propTypes = {
+    children: PropTypes.node
+  }
+
   state = {
     error: null,
     info: null

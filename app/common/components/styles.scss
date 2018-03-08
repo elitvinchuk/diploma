@@ -1,0 +1,29 @@
+@import "../../styles/variables";
+
+// region Animations
+@keyframes spin {
+  from {
+    transform:rotate(0deg);
+  }
+  to {
+    transform:rotate(360deg);
+  }
+}
+
+.spinning {
+  animation: spin 2s linear infinite;
+}
+// endregion
+
+// region Loader
+.loader {
+  @extend .spinning;
+  color: $gray-400;
+
+  &.fullscreen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+  }
+}
+// endregion

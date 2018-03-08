@@ -15,6 +15,10 @@ const reduxFormConfig = {
   form: formName,
   onSubmit: ({ email, password }, dispatch) =>
     dispatch(actions.signInWithCredentials(email, password)).catch(error => {
+      dispatch({
+        type: constants.SIGN_OUT
+      })
+
       const errorMap = {
         'auth/invalid-email': {
           email: 'Неверный адрес электронной почты'
