@@ -1,26 +1,28 @@
 import React from 'react'
-import { string } from 'prop-types'
-import { propTypes } from 'redux-form'
+import { func, string } from 'prop-types'
+// import { fieldInputPropTypes, fieldMetaPropTypes } from 'redux-form'
 import cx from 'classnames'
 
-const Input = ({ id, input, label, meta: { error, touched }, ...rest }) => (
+const Input = ({ input, label, meta: { error, touched }, ...rest }) => (
   <div className="form-label-group">
     <input
       {...input}
       {...rest}
-      id={id}
+      id={input.name}
       className={cx('form-control', { 'is-invalid': error })}
       placeholder={label}
     />
-    <label htmlFor={id}>{label}</label>
+    <label htmlFor={input.name}>{label}</label>
     {error && touched && <div className="invalid-feedback">{error}</div>}
   </div>
 )
 
 Input.propTypes = {
-  // ...propTypes,
-  id: string.isRequired,
-  label: string.isRequired
+  // input: fieldInputPropTypes,
+  // input: func,
+  label: string.isRequired,
+  // meta: func
+  // meta: fieldMetaPropTypes
 }
 
 export default Input

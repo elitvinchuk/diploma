@@ -10,14 +10,17 @@
   "extends": [
     "eslint:recommended",
     "plugin:prettier/recommended",
-    "plugin:react/recommended"],
+    "plugin:react/recommended"
+  ],
   "rules": {
     "prettier/prettier": [
       "error",
       {
         "semi": false,
-        "singleQuote": true
-      }],
+        "singleQuote": true,
+        "tabWidth": 2
+      }
+    ],
     "react/jsx-uses-react": "error"
   }
 }

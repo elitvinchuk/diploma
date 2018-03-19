@@ -5,8 +5,6 @@ import { connect } from 'react-redux'
 import { Redirect, Route } from 'react-router-dom'
 import routes from 'routes'
 
-// todo: update to support roles
-
 @connect(state => ({
   isAuthenticated: selectors.isAuthenticated(state)
 }))

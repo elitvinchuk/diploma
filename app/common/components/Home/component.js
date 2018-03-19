@@ -1,27 +1,31 @@
-import UsersList from 'admin/components/UsersList'
+import { CoursesList, UsersList } from 'admin/views'
 import { ErrorBoundary, Header, NotFound, PrivateLink } from 'common/components'
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import routes from 'routes'
+import r from 'routes'
 import { Application, ApplicationsList } from 'tutors'
 
-// todo: wrap routes with roles separation wrapper
+// todo: create auth role wrapper to <| show/hide components |>
 // todo: fix errorBoundary
 
 const Home = () => (
   <ErrorBoundary>
     <Header>
-      <PrivateLink to={routes.applications} role="tutor" label="Обращения" />
-      <PrivateLink to={routes.calendar} role="tutor" label="Календарь" />
-      <PrivateLink to={routes.users} role="admin" label="Пользователи" />
+      <PrivateLink to={r.applications} role="tutor" label="Обращения" />
+      <PrivateLink to={r.calendar} role="tutor" label="Календарь" />
+
+      <PrivateLink to={r.courses} role="admin" label="Предметы" />
+      <PrivateLink to={r.users} role="admin" label="Пользователи" />
     </Header>
 
     <div className="container">
       <Switch>
-        <Route exact path={routes.applications} component={ApplicationsList} />
-        <Route path={routes.application} component={Application} />
+        <Route exact path={r.applications} component={ApplicationsList} />
+        <Route path={r.application} component={Application} />
 
-        <Route path={routes.users} component={UsersList} />
+        <Route path={r.courses} component={CoursesList} />
+        <Route path={r.users} component={UsersList} />
+
         <Route component={NotFound} />
       </Switch>
     </div>

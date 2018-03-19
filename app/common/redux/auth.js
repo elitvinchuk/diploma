@@ -2,10 +2,10 @@ import { auth, usersRef } from 'firebaseConfig'
 import { pick } from 'lodash'
 
 export const constants = {
-  ANONYMOUS: 'ANONYMOUS',
-  ATTEMPTING_LOGIN: 'ATTEMPTING_LOGIN',
-  SIGNED_IN: 'SIGNED_IN',
-  SIGN_OUT: 'SIGN_OUT'
+  ANONYMOUS: 'auth/ANONYMOUS',
+  ATTEMPTING_LOGIN: 'auth/ATTEMPTING_LOGIN',
+  SIGNED_IN: 'auth/SIGNED_IN',
+  SIGN_OUT: 'auth/SIGN_OUT'
 }
 
 export const actions = {
@@ -45,6 +45,7 @@ export const actions = {
               roles: []
             }
 
+            // todo: deal with dat merge
             userRef.set(newUserData, { merge: true }).then(() => {
               dispatch({
                 type: constants.SIGNED_IN,

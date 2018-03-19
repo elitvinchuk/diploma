@@ -43,7 +43,6 @@ const LoginComponent = ({
         name="email"
         component={Input}
         type="email"
-        id="inputEmail"
         label="Адрес электронной почты"
         required
         autoFocus
@@ -53,7 +52,6 @@ const LoginComponent = ({
         name="password"
         component={Input}
         type="password"
-        id="inputPassword"
         label="Пароль"
         required
       />
@@ -70,7 +68,7 @@ const LoginComponent = ({
 )
 
 LoginComponent.propTypes = {
-  ...propTypes,
+  // ...propTypes,
   auth: object,
   attemptingLogin: bool,
   location: object.isRequired

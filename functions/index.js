@@ -5,15 +5,19 @@ admin.initializeApp(functions.config().firebase)
 
 // todo: bring linting back
 
-exports.newMessageAlert = functions.database.ref('/messages/{message}')
-  .onWrite((event) => {
+exports.newMessageAlert = functions.database
+  .ref('/messages/{message}')
+  .onWrite(event => {
     const message = event.data.val()
 
-    const getTokens = admin.database().ref('users').once('value')
-      .then((snapshot) => {
+    const getTokens = admin
+      .database()
+      .ref('users')
+      .once('value')
+      .then(snapshot => {
         const tokens = []
 
-        snapshot.forEach((user) => {
+        snapshot.forEach(user => {
           const token = user.child('token').val()
 
           if (token) {
@@ -22,20 +26,22 @@ exports.newMessageAlert = functions.database.ref('/messages/{message}')
         })
 
         return tokens
-    })
+      })
 
     const getAuthor = admin.auth().getUser(message.uid)
 
-    Promise.all([getTokens, getAuthor])
-      .then(([tokens, author]) => {
-        const payload = {
-          notification: {
-            title: `Message from ${author.displayName}`,
-            body: message.content,
-            icon: author.photoURL
-          }
+    Promise.all([getTokens, getAuthor]).then(([tokens, author]) => {
+      const payload = {
+        notification: {
+          title: `Message from ${author.displayName}`,
+          body: message.content,
+          icon: author.photoURL
         }
+      }
 
-        admin.messaging().sendToDevice(tokens, payload).catch(console.error)
+      admin
+        .messaging()
+        .sendToDevice(tokens, payload)
+        .catch(console.error)
     })
   })

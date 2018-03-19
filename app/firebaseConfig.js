@@ -16,5 +16,6 @@ export const auth = firebase.auth()
 const firestore = firebase.firestore()
 
 export const usersRef = firestore.collection('users')
+export const coursesRef = firestore.collection('courses')
 
 export default firebase
