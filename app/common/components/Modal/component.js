@@ -8,7 +8,7 @@ const ModalComponent = ({
   contentLabel,
   handleClose,
   onAfterOpen,
-  triggerSubmit,
+  // triggerSubmit,
   visible
 }) => (
   <>
@@ -38,7 +38,9 @@ const ModalComponent = ({
         </button>
       </div>
 
-      <div className="modal-body">{children}</div>
+      {children}
+
+      {/*<div className="modal-body">{children}</div>
 
       <div className="modal-footer">
         <button
@@ -55,7 +57,7 @@ const ModalComponent = ({
         >
           Отмена
         </button>
-      </div>
+      </div>*/}
     </ReactModal>
     {visible && <div className="modal-backdrop fade show" />}
   </>
@@ -67,7 +69,7 @@ ModalComponent.propTypes = {
   handleClose: PropTypes.func,
   modalId: PropTypes.string.isRequired,
   onAfterOpen: PropTypes.func,
-  triggerSubmit: PropTypes.func.isRequired,
+  // triggerSubmit: PropTypes.func.isRequired,
   visible: PropTypes.bool.isRequired
 }
 

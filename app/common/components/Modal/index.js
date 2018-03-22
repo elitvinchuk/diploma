@@ -3,8 +3,8 @@ import ModalComponent from './component'
 import { actions as popupActions, selectors } from '../../redux/modal'
 import { submit } from 'redux-form'
 
-const mapStateToProps = (state, ownProps) => ({
-  visible: !!selectors.modalIsVisible(state.modal, ownProps.modalId)
+const mapStateToProps = (state, { modalId }) => ({
+  visible: !!selectors.modalIsVisible(state.modal, modalId)
 })
 
 const mapDispatchToProps = (dispatch, { modalId }) => ({

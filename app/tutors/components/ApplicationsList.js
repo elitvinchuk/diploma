@@ -22,7 +22,7 @@ times(10, () => {
 
 const ApplicationsList = () => (
   <>
-    <h1>Список обращений</h1>
+    <h1 className="mb-3 mt-3 display-4">Список обращений</h1>
 
     <form>
       <input

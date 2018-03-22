@@ -8,14 +8,14 @@ import r from 'routes'
 import store, { history } from 'store'
 
 const App = () => (
-    <Provider store={store}>
-        <ConnectedRouter history={history}>
-            <Switch>
-                <Route exact path={r.login} component={Login} />
-                <PrivateRoute path={r.index} component={Home} />
-            </Switch>
-        </ConnectedRouter>
-    </Provider>
+  <Provider store={store}>
+    <ConnectedRouter history={history}>
+      <Switch>
+        <Route exact path={r.login} component={Login} />
+        <PrivateRoute path={r.index} component={Home} />
+      </Switch>
+    </ConnectedRouter>
+  </Provider>
 )
 
 export default hot(module)(App)

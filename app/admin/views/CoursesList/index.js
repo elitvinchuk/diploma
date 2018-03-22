@@ -1,3 +1,4 @@
+import { actions } from 'admin/redux/courses'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
@@ -5,9 +6,6 @@ import { actions as modalActions } from 'common/redux/modal'
 import CourseEditModal from './components/CourseEditModal'
 import CoursesListComponent from './component'
 import { actions as coursesActions } from '../../redux/courses'
-// import { SubmissionError } from 'redux-form'
-
-// const mapStateToProps = (state, ownProps) => ({})
 
 @connect(state => ({
   courses: state.courses
@@ -18,6 +16,11 @@ class CoursesList extends React.Component {
     dispatch: PropTypes.func
   }
 
+  state = {
+    activeCourseId: null,
+    searchFilter: ''
+  }
+
   componentDidMount() {
     this.props.dispatch(coursesActions.getCourses())
   }
@@ -25,17 +28,32 @@ class CoursesList extends React.Component {
   handleSubmitCourse = course =>
     this.props.dispatch(coursesActions.createCourse(course))
 
-  handleOpenModal = () => {
-    this.props.dispatch(modalActions.open(CourseEditModal.id))
+  handleOpenModal = activeCourseId => () => {
+    this.setState(
+      {
+        activeCourseId
+      },
+      () => {
+        this.props.dispatch(modalActions.open(CourseEditModal.id))
+      }
+    )
+  }
+
+  handleDeleteCourse = courseId => {
+    if (
+      confirm(`Вы уверены, что хотите удалить дисциплину? Действие необратимо.`)
+    ) {
+      this.props.dispatch(actions.deleteCourse(courseId))
+    }
   }
 
   render() {
-    const { courses } = this.props
-
     return (
       <CoursesListComponent
-        courses={courses}
-        handleSubmitCourse={this.handleSubmitCourse}
+        activeCourseId={this.state.activeCourseId}
+        courses={this.props.courses}
+        onDeleteCourse={this.handleDeleteCourse}
+        onSubmitCourse={this.handleSubmitCourse}
         openModal={this.handleOpenModal}
       />
     )

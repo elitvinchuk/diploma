@@ -2,7 +2,8 @@ import { coursesRef } from 'firebaseConfig'
 
 const constants = {
   CREATE: 'courses/CREATE',
-  SET_COURSES: 'courses/SET_COURSES'
+  SET_COURSES: 'courses/SET_COURSES',
+  DELETE_COURSE: 'courses/DELETE_COURSE'
 }
 
 export const actions = {
@@ -33,6 +34,9 @@ export const actions = {
         payload: coursesMap
       })
     })
+  },
+  deleteCourse: (courseId) => dispatch => {
+    // remove callback here
   }
 }
 
