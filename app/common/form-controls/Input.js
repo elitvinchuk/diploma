@@ -9,7 +9,7 @@ const Input = ({ input, label, meta: { error, touched }, ...rest }) => (
       {...input}
       {...rest}
       id={input.name}
-      className={cx('form-control', { 'is-invalid': error })}
+      className={cx('form-control', { 'is-invalid': error && touched })}
       placeholder={label}
     />
     <label htmlFor={input.name}>{label}</label>

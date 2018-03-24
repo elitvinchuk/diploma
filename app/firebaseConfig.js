@@ -18,4 +18,6 @@ const firestore = firebase.firestore()
 export const usersRef = firestore.collection('users')
 export const coursesRef = firestore.collection('courses')
 
+export const FieldValue = firebase.firestore.FieldValue
+
 export default firebase

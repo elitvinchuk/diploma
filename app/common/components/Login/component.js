@@ -1,6 +1,7 @@
 import Logo from 'common/assets/logo.png'
 import { Loader } from 'common/components'
 import { Input } from 'common/form-controls'
+import { required } from 'common/utils/validators'
 import { bool, object } from 'prop-types'
 import React from 'react'
 import { Redirect } from 'react-router-dom'
@@ -44,8 +45,7 @@ const LoginComponent = ({
         component={Input}
         type="email"
         label="Адрес электронной почты"
-        required
-        autoFocus
+        validate={required}
       />
 
       <Field
@@ -53,7 +53,7 @@ const LoginComponent = ({
         component={Input}
         type="password"
         label="Пароль"
-        required
+        validate={required}
       />
 
       <button

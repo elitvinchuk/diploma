@@ -36,7 +36,10 @@ export const actions = {
           if (user) {
             dispatch({
               type: constants.SIGNED_IN,
-              payload: user
+              payload: {
+                ...user,
+                uid: doc.id
+              }
             })
           } else {
             // todo: add last sign in time
