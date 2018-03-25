@@ -7,6 +7,9 @@ import { NavLink, Route, Switch } from 'react-router-dom'
 import r from 'routes'
 import { Application, ApplicationsList } from 'tutors' // todo: convert to tutors/view
 
+import 'styles'
+import 'react-select/dist/react-select.css'
+
 @connect(state => ({
   auth: state.auth
 }))

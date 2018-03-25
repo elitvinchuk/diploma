@@ -32,11 +32,7 @@ const CourseListComponent = ({
           onChange={handleFilterChange}
         />
         <div className="input-group-append">
-          <button
-            className="btn btn-outline-success"
-            type="button"
-            onClick={openModal()}
-          >
+          <button className="btn btn-outline-success" type="button" onClick={openModal()}>
             Добавить
           </button>
         </div>

@@ -9,29 +9,17 @@ import { Field, propTypes } from 'redux-form'
 import routes from 'routes'
 import './styles'
 
-const LoginComponent = ({
-  auth,
-  attemptingLogin,
-  error,
-  handleSubmit,
-  location
-}) => (
-  <div className="form-signin-wrapper">
+const LoginComponent = ({ auth, attemptingLogin, error, handleSubmit, location }) => (
+  <div className="d-flex h-100 justify-content-center align-items-center">
     {auth.redirectToReferrer && (
-      <Redirect
-        to={location.state ? location.state.from : routes.applications}
-      />
+      <Redirect to={location.state ? location.state.from : routes.applications} />
     )}
-    <form className="form-signin" onSubmit={handleSubmit}>
+    <form className="jumbotron border border-info" onSubmit={handleSubmit}>
       <div className="text-center mb-4">
-        <img
-          className="mb-4 rounded-circle"
-          src={Logo}
-          alt=""
-          width="112"
-          height="112"
-        />
-        <h1 className="mb-3">Представьтесь, пожалуйста</h1>
+        <img className="mb-4 rounded-circle" src={Logo} alt="" width="112" height="112" />
+        <h1 className="mb-3">
+          Представьтесь,<br /> пожалуйста
+        </h1>
       </div>
 
       {error && (
@@ -48,19 +36,9 @@ const LoginComponent = ({
         validate={required}
       />
 
-      <Field
-        name="password"
-        component={Input}
-        type="password"
-        label="Пароль"
-        validate={required}
-      />
+      <Field name="password" component={Input} type="password" label="Пароль" validate={required} />
 
-      <button
-        className="btn btn-lg btn-primary btn-block"
-        disabled={attemptingLogin}
-        type="submit"
-      >
+      <button className="btn btn-lg btn-primary btn-block" disabled={attemptingLogin} type="submit">
         {attemptingLogin ? <Loader /> : 'Войти'}
       </button>
     </form>

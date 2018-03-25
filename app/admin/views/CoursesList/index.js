@@ -6,6 +6,7 @@ import { actions as modalActions } from 'common/redux/modal'
 import CourseEditModal from './components/CourseEditModal'
 import CoursesListComponent from './component'
 import { actions as coursesActions } from '../../redux/courses'
+import { actions as usersActions } from '../../redux/users'
 
 @connect(state => ({
   auth: state.auth,
@@ -24,7 +25,9 @@ class CoursesList extends React.Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(coursesActions.getCourses())
+    const { dispatch } = this.props
+    dispatch(coursesActions.getCourses())
+    dispatch(usersActions.getUsers('tutors')) // todo: improve getUsers
   }
 
   handleFilterChange = ({ target }) => {
@@ -50,12 +53,8 @@ class CoursesList extends React.Component {
   }
 
   handleDeleteCourse = courseId => () => {
-    if (
-      confirm(`Вы уверены, что хотите удалить дисциплину? Действие необратимо.`)
-    ) {
-      this.props
-        .dispatch(actions.deleteCourse(courseId))
-        .then(this.handleSuccessfulAction)
+    if (confirm(`Вы уверены, что хотите удалить дисциплину? Действие необратимо.`)) {
+      this.props.dispatch(actions.deleteCourse(courseId)).then(this.handleSuccessfulAction)
     }
   }
 
@@ -77,8 +76,7 @@ class CoursesList extends React.Component {
     )
   }
 
-  handleCloseModal = () =>
-    this.props.dispatch(modalActions.close(CourseEditModal.id))
+  handleCloseModal = () => this.props.dispatch(modalActions.close(CourseEditModal.id))
 
   render() {
     const { activeCourseId, searchFilter } = this.state

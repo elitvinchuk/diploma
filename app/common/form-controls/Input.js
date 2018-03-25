@@ -4,7 +4,8 @@ import { func, string } from 'prop-types'
 import cx from 'classnames'
 
 const Input = ({ input, label, meta: { error, touched }, ...rest }) => (
-  <div className="form-label-group">
+  <div className="form-group">
+    <label htmlFor={input.name}>{label}</label>
     <input
       {...input}
       {...rest}
@@ -12,7 +13,6 @@ const Input = ({ input, label, meta: { error, touched }, ...rest }) => (
       className={cx('form-control', { 'is-invalid': error && touched })}
       placeholder={label}
     />
-    <label htmlFor={input.name}>{label}</label>
     {error && touched && <div className="invalid-feedback">{error}</div>}
   </div>
 )

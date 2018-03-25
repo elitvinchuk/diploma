@@ -3,15 +3,7 @@ import { map } from 'lodash'
 import { array, func, object, oneOf, string } from 'prop-types'
 import React from 'react'
 
-const ButtonGroup = ({
-  activeClass,
-  ariaLabel,
-  className,
-  onChange,
-  options,
-  size,
-  value
-}) => (
+const ButtonGroup = ({ activeClass, ariaLabel, className, onChange, options, size, value }) => (
   <div
     className={cx('btn-group', className, {
       'btn-group-lg': size === 'big',

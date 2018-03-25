@@ -3,9 +3,6 @@ import React from 'react'
 import { render } from 'react-dom'
 import moment from 'moment'
 import Wrapper from './Wrapper'
-import 'styles'
-
-import 'react-select/dist/react-select.css'
 
 moment.locale('ru')
 

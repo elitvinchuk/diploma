@@ -5,25 +5,30 @@ import Select from 'react-select'
 const SelectComponent = ({
   input: { name, onChange, value },
   label,
+  labelKey,
   meta: { error, touched },
   options
 }) => (
-  <div className="form-label-group">
+  <div className="form-group">
+    <label htmlFor={name}>{label}</label>
     <Select
       name={name}
       multi={true}
       onChange={onChange}
       value={value}
+      labelKey={labelKey}
       className="form-control"
-      options={[{ value: 'one', label: 'One' }, { value: 'two', label: 'Two' }]}
+      options={options}
+      noResultsText="Результатов нет"
+      placeholder="Начните вводить"
     />
-    <label htmlFor={name}>{label}</label>
     {error && touched && <div className="invalid-feedback">{error}</div>}
   </div>
 )
 
 SelectComponent.propTypes = {
   input: PropTypes.object,
+  labelKey: PropTypes.string,
   options: PropTypes.array.isRequired
 }
 

@@ -132,6 +132,7 @@ class UsersList extends React.Component {
                       options={dict.roles}
                       value={Object.keys(roles)}
                       onChange={this.handleRoleChangeRequest(id)}
+                      activeClass="btn-info btn-info"
                     />
                   </td>
                 </tr>

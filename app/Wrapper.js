@@ -7,6 +7,9 @@ import { ConnectedRouter } from 'react-router-redux'
 import r from 'routes'
 import store, { history } from 'store'
 
+// import 'styles'
+// import 'react-select/dist/react-select.css'
+
 const App = () => (
   <Provider store={store}>
     <ConnectedRouter history={history}>
