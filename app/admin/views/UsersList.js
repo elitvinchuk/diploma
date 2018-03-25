@@ -1,20 +1,23 @@
-import { getUsers } from 'admin/redux/users'
+import { actions } from 'admin/redux/users'
 import UserpicPlaceholder from 'common/assets/userpic-placeholder.jpg'
 import { Loader } from 'common/components'
 import dict from 'common/dictionary'
 import { ButtonGroup } from 'common/form-controls'
-import { func, object } from 'prop-types'
+import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
-import '../styles.scss'
+import isEmpty from 'lodash/isEmpty'
 
+// todo: Consider splitting component
 @connect(state => ({
+  auth: state.auth,
   users: state.users
 }))
 class UsersList extends React.Component {
   static propTypes = {
-    dispatch: func,
-    users: object
+    auth: PropTypes.object,
+    dispatch: PropTypes.func,
+    users: PropTypes.object
   }
 
   state = {
@@ -23,7 +26,7 @@ class UsersList extends React.Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(getUsers())
+    this.props.dispatch(actions.getUsers())
   }
 
   handleTextChange = ({ target }) => {
@@ -32,16 +35,36 @@ class UsersList extends React.Component {
     })
   }
 
-  handleRoleChange = roleFilter => {
+  handleRoleFilterChange = roleFilter => {
     this.setState({
       roleFilter
     })
   }
 
+  handleRoleChangeRequest = userId => (roles, changedRole) => {
+    if (userId === this.props.auth.uid && changedRole === 'admin') {
+      if (confirm('Вы сейчас убираете роль администратора с себя. Вы уверены?')) {
+        this.toggleRole(userId, roles)
+      }
+    } else {
+      this.toggleRole(userId, roles)
+    }
+  }
+
+  toggleRole = (userId, roles) => {
+    const mapifiedRoles = roles.reduce((rolesMap, role) => {
+      rolesMap[role] = true
+
+      return rolesMap
+    }, {})
+
+    return this.props.dispatch(actions.toggleUserRole(userId, mapifiedRoles))
+  }
+
   render() {
     const { users } = this.props
 
-    if (!users) {
+    if (isEmpty(users)) {
       return <Loader fullscreen />
     }
 
@@ -52,16 +75,14 @@ class UsersList extends React.Component {
       const { displayName, email, roles } = users[id]
       const stringValue = (displayName + email).toUpperCase()
 
-      const roleMatch = roleFilter.length
-        ? roleFilter.some(role => ~roles.indexOf(role))
-        : true
+      const roleMatch = roleFilter.length ? roleFilter.some(role => roles[role]) : true
 
       return stringValue.includes(textFilter.toUpperCase()) && roleMatch
     })
 
     return (
       <>
-        <h1 className="mb-3">Пользователи</h1>
+        <h1 className="mb-3 mt-3 display-4">Пользователи</h1>
 
         <form className="form-inline d-flex mb-4">
           <input
@@ -71,13 +92,14 @@ class UsersList extends React.Component {
             placeholder="Поиcк..."
             value={textFilter}
           />
-
+          {/* todo: Replace with Dropdown*/}
           <ButtonGroup
             options={dict.roles}
             value={roleFilter}
-            onChange={this.handleRoleChange}
+            onChange={this.handleRoleFilterChange}
             className="type-filter"
           />
+          {/* todo: Implement creation logic */}
         </form>
         <table className="users-table table">
           <thead>
@@ -106,7 +128,11 @@ class UsersList extends React.Component {
                   <td className="align-middle">{displayName}</td>
                   <td className="align-middle">{email}</td>
                   <td className="text-right">
-                    <ButtonGroup options={dict.roles} value={roles} />
+                    <ButtonGroup
+                      options={dict.roles}
+                      value={Object.keys(roles)}
+                      onChange={this.handleRoleChangeRequest(id)}
+                    />
                   </td>
                 </tr>
               )

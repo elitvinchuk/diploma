@@ -27,6 +27,7 @@
   "dependencies": {
     "bootstrap": "^4.0.0",
     "classnames": "^2.2.5",
+    "dot-prop-immutable": "^1.4.0",
     "faker": "^4.1.0",
     "firebase": "^4.11.0",
     "history": "^4.7.2",

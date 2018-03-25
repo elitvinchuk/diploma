@@ -12,7 +12,6 @@ class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, info) {
-    console.log('go error')
     this.setState({
       error,
       info
@@ -24,10 +23,14 @@ class ErrorBoundary extends React.Component {
 
     if (error) {
       return (
-        <>
-          <h1>{error}</h1>
-          <p>{info}</p>
-        </>
+        <div className="d-flex h-100 justify-content-center align-items-center">
+          <div className="jumbotron h-50 w-75">
+            <h1>
+              <span className="oi oi-bug" /> {error.message}
+            </h1>
+            <code>{info.componentStack}</code>
+          </div>
+        </div>
       )
     }
 

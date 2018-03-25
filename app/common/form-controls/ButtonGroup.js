@@ -4,6 +4,7 @@ import { array, func, object, oneOf, string } from 'prop-types'
 import React from 'react'
 
 const ButtonGroup = ({
+  activeClass,
   ariaLabel,
   className,
   onChange,
@@ -23,7 +24,9 @@ const ButtonGroup = ({
       <button
         key={key}
         type="button"
-        className={cx('btn btn-secondary', { active: value.includes(key) })}
+        className={cx('btn btn-secondary', {
+          [activeClass]: value.includes(key)
+        })}
         onClick={() => {
           const newValue = [...value]
           const index = newValue.indexOf(key)
@@ -43,12 +46,17 @@ const ButtonGroup = ({
 )
 
 ButtonGroup.propTypes = {
+  activeClass: string,
   ariaLabel: string,
   className: string,
   onChange: func.isRequired,
   options: object.isRequired,
   size: oneOf(['big', 'small']),
   value: array.isRequired
+}
+
+ButtonGroup.defaultProps = {
+  activeClass: 'active'
 }
 
 export default ButtonGroup

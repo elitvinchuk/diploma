@@ -18,7 +18,8 @@
       {
         "semi": false,
         "singleQuote": true,
-        "tabWidth": 2
+        "tabWidth": 2,
+        "printWidth": 100
       }
     ],
     "react/jsx-uses-react": "error"

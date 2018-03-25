@@ -1,10 +1,5 @@
 import { CoursesList, UsersList } from 'admin/views'
-import {
-  ErrorBoundary,
-  Header,
-  NotFound,
-  PassportControl
-} from 'common/components'
+import { ErrorBoundary, Header, NotFound } from 'common/components'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
@@ -23,7 +18,7 @@ class HomeComponent extends React.Component {
   render() {
     const { auth: { roles } } = this.props
     const visibleToAdmin = roles['admin']
-    const visibleToStudent = roles['student']
+    // const visibleToStudent = roles['student']
     const visibleToTutor = roles['tutor']
 
     return (
@@ -53,23 +48,11 @@ class HomeComponent extends React.Component {
 
         <div className="container">
           <Switch>
-            {visibleToAdmin && (
-              <>
-                <Route path={r.courses} component={CoursesList} />
-                <Route path={r.users} component={UsersList} />
-              </>
-            )}
+            {visibleToAdmin && <Route path={r.courses} component={CoursesList} />}
+            {visibleToAdmin && <Route path={r.users} component={UsersList} />}
 
-            {visibleToTutor && (
-              <>
-                <Route
-                  exact
-                  path={r.applications}
-                  component={ApplicationsList}
-                />
-                <Route path={r.application} component={Application} />
-              </>
-            )}
+            {visibleToTutor && <Route path={r.applications} component={ApplicationsList} />}
+            {visibleToTutor && <Route path={r.application} component={Application} />}
 
             <Route component={NotFound} />
           </Switch>
