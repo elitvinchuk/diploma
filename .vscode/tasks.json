@@ -15,7 +15,8 @@
       {
         "label": "Deploy",
         "type": "npm",
-        "script": "deploy"
+        "script": "deploy",
+        "problemMatcher": []
       },
       {
         "label": "Build",
@@ -24,6 +25,12 @@
         "problemMatcher": [
           "$eslint-compact"
         ]
+      },
+      {
+        "type": "npm",
+        "script": "deploy",
+        "path": "functions/",
+        "problemMatcher": []
       }
     ]
   }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Modal } from 'common/components'
-import { Input } from 'common/form-controls'
+import { Input, Select } from 'common/form-controls'
 import { required } from 'common/utils/validators'
 
 import { Field, reduxForm } from 'redux-form'
@@ -57,7 +57,7 @@ const CourseEditModal = ({
         />
         <Field
           name="tutors"
-          component={Input}
+          component={Select}
           label="Преподаватели"
           validate={required}
         />

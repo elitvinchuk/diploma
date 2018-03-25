@@ -1,0 +1,134 @@
+[debug] [2018-03-24T19:23:54.833Z] ----------------------------------------------------------------------
+[debug] [2018-03-24T19:23:54.835Z] Command:       /usr/local/Cellar/node/9.8.0/bin/node /usr/local/bin/firebase deploy --only functions
+[debug] [2018-03-24T19:23:54.836Z] CLI Version:   3.17.4
+[debug] [2018-03-24T19:23:54.836Z] Platform:      darwin
+[debug] [2018-03-24T19:23:54.836Z] Node Version:  v9.8.0
+[debug] [2018-03-24T19:23:54.836Z] Time:          Sat Mar 24 2018 22:23:54 GMT+0300 (+03)
+[debug] [2018-03-24T19:23:54.836Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-03-24T19:23:54.857Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-03-24T19:23:54.857Z] > authorizing via signed-in user
+[debug] [2018-03-24T19:23:54.859Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2018-03-24T19:23:54.859Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ { refresh_token: '1/4RdvlNYNAyvCj42QejC7fPeOTBLKKPD9kc2_2lcXG2k',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Sat Mar 24 2018 22:23:54 GMT+0300 (+03)
+[debug] [2018-03-24T19:23:55.052Z] <<< HTTP RESPONSE 200
+[debug] [2018-03-24T19:23:55.075Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/certificate-circuit  
+  
+ Sat Mar 24 2018 22:23:55 GMT+0300 (+03)
+[debug] [2018-03-24T19:23:55.880Z] <<< HTTP RESPONSE 200
+[debug] [2018-03-24T19:23:55.881Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/certificate-circuit/tokens  
+  
+ Sat Mar 24 2018 22:23:55 GMT+0300 (+03)
+[debug] [2018-03-24T19:23:56.531Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'certificate-circuit'...
+[info] 
+[info] i  deploying functions
+[debug] [2018-03-24T19:23:57.329Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase serve --only functions",
+    "shell": "firebase experimental:functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "dependencies": {
+    "firebase-admin": "~5.8.1",
+    "firebase-functions": "^0.8.1"
+  },
+  "devDependencies": {},
+  "private": true
+}
+[info] i  functions: ensuring necessary APIs are enabled...
+[debug] [2018-03-24T19:23:57.330Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/cloudfunctions.googleapis.com/projectSettings/certificate-circuit?view=CONSUMER_VIEW  
+  
+ Sat Mar 24 2018 22:23:57 GMT+0300 (+03)
+[debug] [2018-03-24T19:23:57.331Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/runtimeconfig.googleapis.com/projectSettings/certificate-circuit?view=CONSUMER_VIEW  
+  
+ Sat Mar 24 2018 22:23:57 GMT+0300 (+03)
+[debug] [2018-03-24T19:23:58.763Z] <<< HTTP RESPONSE 200
+[debug] [2018-03-24T19:23:58.783Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: all necessary APIs are enabled
+[debug] [2018-03-24T19:23:58.785Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/certificate-circuit  
+  
+ Sat Mar 24 2018 22:23:58 GMT+0300 (+03)
+[debug] [2018-03-24T19:23:58.785Z] >>> HTTP REQUEST GET https://apikeys.googleapis.com/v1/projects/certificate-circuit/apiKeys  
+  
+ Sat Mar 24 2018 22:23:58 GMT+0300 (+03)
+[debug] [2018-03-24T19:23:59.780Z] <<< HTTP RESPONSE 200
+[debug] [2018-03-24T19:23:59.892Z] <<< HTTP RESPONSE 200
+[info] i  functions: preparing functions directory for uploading...
+[debug] [2018-03-24T19:23:59.894Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/certificate-circuit/configs  
+  
+ Sat Mar 24 2018 22:23:59 GMT+0300 (+03)
+[debug] [2018-03-24T19:24:01.215Z] <<< HTTP RESPONSE 200
+[info] i  functions: packaged functions (25.56 KB) for uploading
+[debug] [2018-03-24T19:24:01.658Z] >>> HTTP REQUEST GET https://www.googleapis.com/storage/v1/b/staging.certificate-circuit.appspot.com  
+  
+ Sat Mar 24 2018 22:24:01 GMT+0300 (+03)
+[debug] [2018-03-24T19:24:01.910Z] <<< HTTP RESPONSE 200
+[debug] [2018-03-24T19:24:01.911Z] >>> HTTP REQUEST POST https://www.googleapis.com/upload/storage/v1/b/staging.certificate-circuit.appspot.com/o?uploadType=media&name=firebase-functions-source  
+ ReadStream {
+  _readableState: 
+   ReadableState {
+     objectMode: false,
+     highWaterMark: 65536,
+     buffer: BufferList { head: [Object], tail: [Object], length: 1 },
+     length: 26174,
+     pipes: null,
+     pipesCount: 0,
+     flowing: null,
+     ended: true,
+     endEmitted: false,
+     reading: false,
+     sync: false,
+     needReadable: false,
+     emittedReadable: true,
+     readableListening: false,
+     resumeScheduled: false,
+     destroyed: false,
+     defaultEncoding: 'utf8',
+     awaitDrain: 0,
+     readingMore: false,
+     decoder: null,
+     encoding: null },
+  readable: true,
+  domain: null,
+  _events: { end: [Function] },
+  _eventsCount: 1,
+  _maxListeners: undefined,
+  path: '/var/folders/cj/f5l_841x1cs98x7jjt_vq8t00000gn/T/firebase-functions-8355NDASurgiy41V.zip',
+  fd: 19,
+  flags: 'r',
+  mode: 438,
+  start: 0,
+  end: Infinity,
+  autoClose: true,
+  pos: 131072,
+  bytesRead: 26174,
+  closed: false } 
+ Sat Mar 24 2018 22:24:01 GMT+0300 (+03)
+[debug] [2018-03-24T19:24:02.666Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: functions folder uploaded successfully
+[debug] [2018-03-24T19:24:02.668Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/projects/certificate-circuit/locations/us-central1/functions  
+  
+ Sat Mar 24 2018 22:24:02 GMT+0300 (+03)
+[debug] [2018-03-24T19:24:03.334Z] <<< HTTP RESPONSE 200
+[info] i  functions: updating function newMessageAlert...
+[debug] [2018-03-24T19:24:03.338Z] Trigger is:  {"eventTrigger":{"resource":"projects/_/instances/certificate-circuit/refs/messages/{message}","eventType":"providers/google.firebase.database/eventTypes/ref.write"}}
+[debug] [2018-03-24T19:24:03.340Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/certificate-circuit/locations/us-central1/functions/newMessageAlert 
+query params: {"updateMask":"sourceArchiveUrl,name,labels,eventTrigger.resource,eventTrigger.eventType"} 
+ { sourceArchiveUrl: 'gs://staging.certificate-circuit.appspot.com/firebase-functions-source',
+  name: 'projects/certificate-circuit/locations/us-central1/functions/newMessageAlert',
+  labels: { 'deployment-tool': 'cli-firebase' },
+  eventTrigger: 
+   { resource: 'projects/_/instances/certificate-circuit/refs/messages/{message}',
+     eventType: 'providers/google.firebase.database/eventTypes/ref.write' } } 
+ Sat Mar 24 2018 22:24:03 GMT+0300 (+03)

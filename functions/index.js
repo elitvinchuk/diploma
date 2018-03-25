@@ -5,7 +5,7 @@ admin.initializeApp(functions.config().firebase)
 
 // todo: bring linting back
 
-exports.newMessageAlert = functions.database
+/* exports.newMessageAlert = functions.database
   .ref('/messages/{message}')
   .onWrite(event => {
     const message = event.data.val()
@@ -44,4 +44,4 @@ exports.newMessageAlert = functions.database
         .sendToDevice(tokens, payload)
         .catch(console.error)
     })
-  })
+  }) */

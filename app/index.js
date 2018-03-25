@@ -5,6 +5,8 @@ import moment from 'moment'
 import Wrapper from './Wrapper'
 import 'styles'
 
+import 'react-select/dist/react-select.css'
+
 moment.locale('ru')
 
 const root = document.getElementById('root')

@@ -19,10 +19,14 @@ export const getUsers = () => dispatch => {
   })
 }
 
+export const getTutors = () => dispatch => {
+
+}
+
 export default (state = {}, action) => {
   switch (action.type) {
     case constants.SET_USERS: {
-      return action.payload
+      return action.payload // todo: merge here
     }
 
     default:
