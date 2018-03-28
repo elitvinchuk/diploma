@@ -6,9 +6,7 @@ import { Route, Switch } from 'react-router-dom'
 import { ConnectedRouter } from 'react-router-redux'
 import r from 'routes'
 import store, { history } from 'store'
-
-// import 'styles'
-// import 'react-select/dist/react-select.css'
+import 'common/styles'
 
 const App = () => (
   <Provider store={store}>

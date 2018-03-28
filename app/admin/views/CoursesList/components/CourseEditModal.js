@@ -7,6 +7,21 @@ import { Field, reduxForm } from 'redux-form'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
+const arrayToObject = value =>
+  value.reduce((valuesMap, tutor) => {
+    valuesMap[tutor.value] = tutor.label
+
+    return valuesMap
+  }, {})
+
+const objectToArray = valueMap =>
+  valueMap
+    ? Object.keys(valueMap).map(value => ({
+        label: valueMap[value],
+        value
+      }))
+    : []
+
 const CourseEditModal = ({
   closeModal,
   courseId,
@@ -15,15 +30,14 @@ const CourseEditModal = ({
   initialValues: { createdAt, createdBy, editedAt, editedBy },
   users
 }) => {
-  // todo: deal with dat default values
-  const iterableTutors = Object.keys(users || {}).reduce((usersArray, userId) => {
+  const iterableTutors = Object.keys(users).reduce((usersArray, userId) => {
     const { displayName, roles } = users[userId]
-    if (roles.tutor) {
-      usersArray.push({
-        value: userId,
-        label: displayName
-      })
-    }
+    // if (roles.tutor) {
+    usersArray.push({
+      value: userId,
+      label: displayName
+    })
+    // }
 
     return usersArray
   }, [])
@@ -75,11 +89,18 @@ const CourseEditModal = ({
             component={Select}
             label="Преподаватели"
             // normalize={(value, previousValue, allValues, allPreviousValues) =>}
+            normalize={arrayToObject}
+            format={objectToArray}
             options={iterableTutors}
             validate={required}
           />
-          <Field name="manual" component={Input} label="Методические пособия" validate={required} />
-          <Field name="tasks" component={Input} label="Задания" validate={required} />
+          <Field
+            name="manual"
+            normalize={value => value.toUpperCase()}
+            component={Input}
+            label="Методические пособия"
+            validate={required}
+          />
         </div>
 
         <div className="modal-footer">
@@ -115,6 +136,10 @@ CourseEditModal.propTypes = {
 }
 
 CourseEditModal.id = 'course-edit'
+
+CourseEditModal.defaultProps = {
+  users: {}
+}
 
 export default connect(state => ({
   users: state.users

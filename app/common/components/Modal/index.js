@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import ModalComponent from './component'
-import { actions as popupActions, selectors } from '../../redux/modal'
+import { actions as popupActions, selectors } from './redux'
 import { submit } from 'redux-form'
 
 const mapStateToProps = (state, { modalId }) => ({

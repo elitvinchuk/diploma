@@ -32,7 +32,6 @@ $icon-font-path: '~open-iconic/font/fonts/';
 //@import "~bootstrap/scss/media";
 @import "~bootstrap/scss/list-group";
 @import "~bootstrap/scss/close";
-@import "../common/components/Modal/styles";
 @import "~bootstrap/scss/tooltip";
 //@import "~bootstrap/scss/popover";
 //@import "~bootstrap/scss/carousel";
@@ -46,5 +45,7 @@ body,
   height: 100%;
 }
 
-@import "../admin/styles";
-@import "../common/styles";
+@import "./common"; //todo: rename me
+@import "./select/index";
+@import "../../admin/styles";
+@import "../components/Modal/styles";

@@ -7,9 +7,6 @@ import { NavLink, Route, Switch } from 'react-router-dom'
 import r from 'routes'
 import { Application, ApplicationsList } from 'tutors' // todo: convert to tutors/view
 
-import 'styles'
-import 'react-select/dist/react-select.css'
-
 @connect(state => ({
   auth: state.auth
 }))
@@ -54,7 +51,7 @@ class HomeComponent extends React.Component {
             {visibleToAdmin && <Route path={r.courses} component={CoursesList} />}
             {visibleToAdmin && <Route path={r.users} component={UsersList} />}
 
-            {visibleToTutor && <Route path={r.applications} component={ApplicationsList} />}
+            {visibleToTutor && <Route exact path={r.applications} component={ApplicationsList} />}
             {visibleToTutor && <Route path={r.application} component={Application} />}
 
             <Route component={NotFound} />

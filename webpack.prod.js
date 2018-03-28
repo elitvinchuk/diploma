@@ -12,7 +12,7 @@ module.exports = merge(common, {
   module: {
     rules: [
       {
-        test: /\.scss$/,
+        test: /\.(scss|css)$/,
         use: extractSass.extract({
           use: [
             {

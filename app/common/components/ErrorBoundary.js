@@ -25,6 +25,19 @@ class ErrorBoundary extends React.Component {
       return (
         <div className="d-flex h-100 justify-content-center align-items-center">
           <div className="jumbotron h-50 w-75">
+            <button
+              type="button"
+              className="close"
+              aria-label="Close"
+              onClick={() => {
+                this.setState({
+                  error: null,
+                  info: null
+                })
+              }}
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
             <h1>
               <span className="oi oi-bug" /> {error.message}
             </h1>
