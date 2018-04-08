@@ -3,8 +3,8 @@ import { func, string } from 'prop-types'
 // import { fieldInputPropTypes, fieldMetaPropTypes } from 'redux-form'
 import cx from 'classnames'
 
-const Input = ({ input, label, meta: { error, touched }, ...rest }) => (
-  <div className="form-group">
+const Input = ({ className, input, label, meta: { error, touched }, ...rest }) => (
+  <div className={cx('form-group', className)}>
     <label htmlFor={input.name}>{label}</label>
     <input
       {...input}
@@ -20,7 +20,8 @@ const Input = ({ input, label, meta: { error, touched }, ...rest }) => (
 Input.propTypes = {
   // input: fieldInputPropTypes,
   // input: func,
-  label: string.isRequired,
+  className: string,
+  label: string.isRequired
   // meta: func
   // meta: fieldMetaPropTypes
 }

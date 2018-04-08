@@ -1,4 +1,3 @@
-import map from 'lodash/map'
 import PropTypes from 'prop-types'
 import React from 'react'
 import CourseEditModal from './components/CourseEditModal'
@@ -14,9 +13,9 @@ const CourseListComponent = ({
   handleFilterChange
 }) => {
   const coursesIds = Object.keys(courses)
-  const filteredIds = coursesIds.filter(id =>
-    courses[id].name.toUpperCase().includes(searchFilter.toUpperCase())
-  )
+  const filteredIds = coursesIds
+    .filter(id => courses[id].name.toUpperCase().includes(searchFilter.toUpperCase()))
+    .sort((firstId, secondId) => courses[firstId].name.localeCompare(courses[secondId].name))
 
   return (
     <>

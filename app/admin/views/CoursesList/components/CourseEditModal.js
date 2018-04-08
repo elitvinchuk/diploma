@@ -1,11 +1,10 @@
 import React from 'react'
 import { Modal } from 'common/components'
-import { Input, Select } from 'common/form-controls'
+import { Checkbox, File, Input, Select } from 'common/form-controls'
 import { required } from 'common/utils/validators'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 import PropTypes from 'prop-types'
-import moment from 'moment'
 
 const arrayToObject = value =>
   value.reduce((valuesMap, tutor) => {
@@ -22,22 +21,37 @@ const objectToArray = valueMap =>
       }))
     : []
 
+const examTypes = [
+  {
+    value: 'test',
+    label: 'Зачёт'
+  },
+  {
+    value: 'diffTest',
+    label: 'Дифферинцированный зачёт'
+  },
+  {
+    value: 'exam',
+    label: 'Экзамен'
+  }
+]
+
 const CourseEditModal = ({
   closeModal,
   courseId,
   handleSubmit,
   onDeleteCourse,
-  initialValues: { createdAt, createdBy, editedAt, editedBy },
+  // initialValues: { createdAt, createdBy, editedAt, editedBy },
   users
 }) => {
   const iterableTutors = Object.keys(users).reduce((usersArray, userId) => {
     const { displayName, roles } = users[userId]
-    // if (roles.tutor) {
-    usersArray.push({
-      value: userId,
-      label: displayName
-    })
-    // }
+    if (roles.tutor) {
+      usersArray.push({
+        value: userId,
+        label: displayName
+      })
+    }
 
     return usersArray
   }, [])
@@ -49,7 +63,8 @@ const CourseEditModal = ({
     >
       <form onSubmit={handleSubmit}>
         <div className="modal-body">
-          {courseId && (
+          {/* Hide under meta collapsible*/}
+          {/*courseId && (
             <dl className="row">
               {createdAt && (
                 <>
@@ -75,7 +90,7 @@ const CourseEditModal = ({
                 </>
               )}
             </dl>
-          )}
+          )*/}
 
           <Field
             name="name"
@@ -88,7 +103,7 @@ const CourseEditModal = ({
             name="tutors"
             component={Select}
             label="Преподаватели"
-            // normalize={(value, previousValue, allValues, allPreviousValues) =>}
+            multi
             normalize={arrayToObject}
             format={objectToArray}
             options={iterableTutors}
@@ -96,11 +111,59 @@ const CourseEditModal = ({
           />
           <Field
             name="manual"
-            normalize={value => value.toUpperCase()}
-            component={Input}
+            component={File}
             label="Методические пособия"
+            // validate={required}
+          />
+          <div className="form-row">
+            <Field
+              name="controlWorksAmount"
+              component={Input}
+              className="col-md-4"
+              type="number"
+              label="Контрольные"
+              validate={required}
+            />
+            <Field
+              name="individualWorksAmount"
+              component={Input}
+              className="col-md-4"
+              type="number"
+              label="Индивидуальные"
+              validate={required}
+            />
+            <Field
+              name="courseHourse"
+              component={Input}
+              className="col-md-4"
+              type="number"
+              label="Часы"
+              validate={required}
+            />
+          </div>
+
+          <Field
+            name="type"
+            component={Select}
+            label="Тип дисциплины"
+            options={examTypes}
             validate={required}
           />
+
+          <div className="form-row">
+            <Field
+              name="courseProject"
+              component={Checkbox}
+              label="Курсовой проект"
+              className="col-md-6"
+            />
+            <Field
+              name="courseWork"
+              component={Checkbox}
+              label="Курсовая работа"
+              className="col-md-6"
+            />
+          </div>
         </div>
 
         <div className="modal-footer">

@@ -1,4 +1,6 @@
-import { coursesRef, FieldValue } from 'firebaseConfig'
+// todo: handle errors
+
+import { coursesRef, storageRef } from 'firebaseConfig'
 
 const constants = {
   CREATE: 'courses/CREATE',
@@ -25,15 +27,21 @@ export const actions = {
       })
     })
   },
-  createCourse: (courseData, creator) => dispatch => {
+  createCourse: ({ manual, ...courseData }, creator) => dispatch => {
     const newCourse = {
       ...courseData,
       createdAt: Date.now(), // todo: update withFieldValue.serverTimestamp(),
-      createdBy: creator
+      createdBy: creator,
+      manual: manual.name
     }
 
+    const courseManualUploadTask = storageRef
+      .child(/* courseData.id */ `manuals/${manual.name}`) // todo: add manual to with course id folder
+      .put(manual)
+
     const creationRequest = coursesRef.add(newCourse)
-    creationRequest.then(docRef => {
+
+    return Promise.all([creationRequest, courseManualUploadTask]).then(docRef => {
       dispatch({
         type: constants.CREATE,
         payload: {
@@ -42,39 +50,46 @@ export const actions = {
         }
       })
     })
-
-    return creationRequest
   },
-  editCourse: (courseData, editor) => dispatch => {
+  editCourse: ({ manual, ...courseData }, editor) => dispatch => {
     const editedCourse = {
       ...courseData,
       editedAt: Date.now(), // todo: update withFieldValue.serverTimestamp(),
-      editedBy: editor
+      editedBy: editor,
+      manual: manual.name
     }
 
-    const editionRequest = coursesRef.doc(courseData.id).set(editedCourse)
-    editionRequest.then(() => {
+    const courseDataRequest = coursesRef.doc(courseData.id).set(editedCourse)
+    const courseManualUploadTask = storageRef
+      .child(/* courseData.id */ `manuals/${manual.name}`) // todo: add manual to with course id folder
+      .put(manual)
+
+    return Promise.all([courseDataRequest, courseManualUploadTask]).then(() => {
       dispatch({
         type: constants.EDIT,
-        payload: {
-          ...editedCourse,
-          id: courseData.id
-        }
+        payload: editedCourse
       })
     })
-
-    return editionRequest
   },
   deleteCourse: courseId => dispatch => {
-    const deletionRequest = coursesRef.doc(courseId).delete()
-    deletionRequest.then(() => {
-      dispatch({
-        type: constants.DELETE,
-        payload: courseId
-      })
-    })
+    return coursesRef
+      .doc(courseId)
+      .get()
+      .then(course => {
+        if (course.exists) {
+          const courseData = course.data()
 
-    return deletionRequest
+          const courseDataDeletionRequest = coursesRef.doc(courseId).delete()
+          const courseManualDeletionTask = storageRef.child(`manuals/${courseData.manual}`).delete()
+
+          return Promise.all([courseDataDeletionRequest, courseManualDeletionTask]).then(() => {
+            dispatch({
+              type: constants.DELETE,
+              payload: courseId
+            })
+          })
+        }
+      })
   }
 }
 

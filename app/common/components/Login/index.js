@@ -28,6 +28,9 @@ const reduxFormConfig = {
         },
         'auth/wrong-password': {
           _error: 'Неверный пароль'
+        },
+        'auth/network-request-failed': {
+          _error: 'Ошибка сети. Проверьте подключение к интернету'
         }
       }
 
@@ -35,6 +38,4 @@ const reduxFormConfig = {
     })
 }
 
-export default withRouter(
-  connect(mapStateToProps)(reduxForm(reduxFormConfig)(LoginComponent))
-)
+export default withRouter(connect(mapStateToProps)(reduxForm(reduxFormConfig)(LoginComponent)))

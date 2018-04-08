@@ -13,13 +13,14 @@ const SelectComponent = ({
   label,
   labelKey,
   meta: { error, touched },
+  multi,
   options
 }) => (
   <div className="form-group">
     <label htmlFor={name}>{label}</label>
     <Select
       name={name}
-      multi={true}
+      multi={multi}
       onChange={onChange}
       value={value}
       labelKey={labelKey}
@@ -38,6 +39,7 @@ const SelectComponent = ({
 SelectComponent.propTypes = {
   input: PropTypes.object,
   labelKey: PropTypes.string,
+  multi: PropTypes.bool,
   options: PropTypes.array.isRequired
 }
 

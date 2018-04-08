@@ -13,6 +13,8 @@ const config = {
 firebase.initializeApp(config)
 
 export const auth = firebase.auth()
+export const storageRef = firebase.storage().ref()
+
 const firestore = firebase.firestore()
 
 export const usersRef = firestore.collection('users')

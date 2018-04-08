@@ -1,3 +1,5 @@
 export ButtonGroup from './ButtonGroup'
+export Checkbox from './Checkbox'
+export File from './File'
 export Input from './Input'
 export Select from './Select'
