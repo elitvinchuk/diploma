@@ -1,3 +1,4 @@
+import { arrayToObject, objectToArray } from 'common/utils/converters'
 import React from 'react'
 import { Modal } from 'common/components'
 import { Checkbox, File, Input, Select } from 'common/form-controls'
@@ -5,21 +6,6 @@ import { required } from 'common/utils/validators'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 import PropTypes from 'prop-types'
-
-const arrayToObject = value =>
-  value.reduce((valuesMap, tutor) => {
-    valuesMap[tutor.value] = tutor.label
-
-    return valuesMap
-  }, {})
-
-const objectToArray = valueMap =>
-  valueMap
-    ? Object.keys(valueMap).map(value => ({
-        label: valueMap[value],
-        value
-      }))
-    : []
 
 const examTypes = [
   {

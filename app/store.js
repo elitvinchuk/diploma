@@ -1,5 +1,4 @@
 import reducers from 'common/redux'
-import { actions } from 'common/redux/auth'
 import createHistory from 'history/createBrowserHistory'
 import { routerMiddleware } from 'react-router-redux'
 import { applyMiddleware, compose, createStore } from 'redux'
@@ -16,7 +15,5 @@ const store = createStore(
   {},
   composeEnhancers(applyMiddleware(...middleware), ...enhancers)
 )
-
-store.dispatch(actions.listenToAuthChanges())
 
 export default store

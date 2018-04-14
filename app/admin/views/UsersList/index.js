@@ -1,32 +1,31 @@
-import { actions } from 'admin/redux/users'
-
+import { actions as usersActions } from 'admin/redux/users'
+import UserEditModal from './UserEditModal'
 import { Loader } from 'common/components'
-
+import { actions as modalActions } from 'common/components/Modal/redux'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
 import isEmpty from 'lodash/isEmpty'
 import UsersListComponent from './component'
 
-// todo: Consider splitting component
+// todo: consider moving connect for courses and users to parent and pass directly
 @connect(state => ({
   auth: state.auth,
+  courses: state.courses,
   users: state.users
 }))
 class UsersList extends React.Component {
   static propTypes = {
     auth: PropTypes.object,
+    courses: PropTypes.object,
     dispatch: PropTypes.func,
     users: PropTypes.object
   }
 
   state = {
+    activeUserId: null,
     textFilter: '',
     roleFilter: []
-  }
-
-  componentDidMount() {
-    this.props.dispatch(actions.getUsers())
   }
 
   handleTextChange = ({ target }) => {
@@ -59,11 +58,22 @@ class UsersList extends React.Component {
       return rolesMap
     }, {})
 
-    return this.props.dispatch(actions.toggleUserRole(userId, mapifiedRoles))
+    return this.props.dispatch(usersActions.toggleUserRole(userId, mapifiedRoles))
+  }
+
+  handleOpenModal = activeUserId => () => {
+    this.setState(
+      {
+        activeUserId
+      },
+      () => {
+        this.props.dispatch(modalActions.open(UserEditModal.id))
+      }
+    )
   }
 
   render() {
-    const { users } = this.props
+    const { courses, users } = this.props
 
     if (isEmpty(users)) {
       return <Loader fullscreen />
@@ -83,6 +93,7 @@ class UsersList extends React.Component {
 
     return (
       <UsersListComponent
+        courses={courses}
         filteredIds={filteredIds}
         handleTextChange={this.handleTextChange}
         handleRoleChangeRequest={this.handleRoleChangeRequest}
@@ -90,6 +101,7 @@ class UsersList extends React.Component {
         textFilter={textFilter}
         roleFilter={roleFilter}
         users={users}
+        openModal={this.handleOpenModal}
       />
     )
   }

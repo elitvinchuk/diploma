@@ -1,5 +1,5 @@
 import Logo from 'common/assets/logo.png'
-import { Loader } from 'common/components'
+import Loader from 'common/components/Loader'
 import { Input } from 'common/form-controls'
 import { required } from 'common/utils/validators'
 import { bool, object } from 'prop-types'
@@ -14,34 +14,48 @@ const LoginComponent = ({ auth, attemptingLogin, error, handleSubmit, location }
     {auth.redirectToReferrer && (
       <Redirect to={location.state ? location.state.from : routes.applications} />
     )}
-    <form className="jumbotron border border-info" onSubmit={handleSubmit}>
-      <div className="text-center mb-4">
-        <img className="mb-4 rounded-circle" src={Logo} alt="" width="112" height="112" />
-        <h1 className="mb-3">
-          Представьтесь,<br /> пожалуйста
-        </h1>
-      </div>
-
-      {error && (
-        <div className="alert alert-danger" role="alert">
-          {error}
+    {attemptingLogin ? (
+      <Loader fullscreen />
+    ) : (
+      <form className="jumbotron border border-info" onSubmit={handleSubmit}>
+        <div className="text-center mb-4">
+          <img className="mb-4 rounded-circle" src={Logo} alt="" width="112" height="112" />
+          <h1 className="mb-3">
+            Представьтесь,<br /> пожалуйста
+          </h1>
         </div>
-      )}
 
-      <Field
-        name="email"
-        component={Input}
-        type="email"
-        label="Адрес электронной почты"
-        validate={required}
-      />
+        {error && (
+          <div className="alert alert-danger" role="alert">
+            {error}
+          </div>
+        )}
 
-      <Field name="password" component={Input} type="password" label="Пароль" validate={required} />
+        <Field
+          name="email"
+          component={Input}
+          type="email"
+          label="Адрес электронной почты"
+          validate={required}
+        />
 
-      <button className="btn btn-lg btn-primary btn-block" disabled={attemptingLogin} type="submit">
-        {attemptingLogin ? <Loader /> : 'Войти'}
-      </button>
-    </form>
+        <Field
+          name="password"
+          component={Input}
+          type="password"
+          label="Пароль"
+          validate={required}
+        />
+
+        <button
+          className="btn btn-lg btn-primary btn-block"
+          disabled={attemptingLogin}
+          type="submit"
+        >
+          Войти
+        </button>
+      </form>
+    )}
   </div>
 )
 

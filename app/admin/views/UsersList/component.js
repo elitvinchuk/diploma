@@ -3,12 +3,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import dict from 'common/dictionary'
 import UserpicPlaceholder from 'common/assets/userpic-placeholder.jpg'
+import UserEditModal from './UserEditModal'
 
 const UsersListComponent = ({
+  courses,
   filteredIds,
   handleTextChange,
   handleRoleChangeRequest,
   handleRoleFilterChange,
+  openModal,
   textFilter,
   roleFilter,
   users
@@ -48,7 +51,7 @@ const UsersListComponent = ({
           const { displayName, email, photoURL, roles } = users[id]
 
           return (
-            <tr key={id}>
+            <tr key={id} onClick={openModal(id)}>
               <td>
                 <img
                   src={photoURL || UserpicPlaceholder}
@@ -72,10 +75,12 @@ const UsersListComponent = ({
         })}
       </tbody>
     </table>
+    <UserEditModal courses={courses} />
   </>
 )
 
 UsersListComponent.propTypes = {
+  courses: PropTypes.object,
   filteredIds: PropTypes.array,
   handleTextChange: PropTypes.func.isRequired,
   handleRoleChangeRequest: PropTypes.func.isRequired,

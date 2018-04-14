@@ -5,7 +5,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { NavLink, Route, Switch } from 'react-router-dom'
 import r from 'routes'
-import { Application, ApplicationsList } from 'tutors' // todo: convert to tutors/view
+import { Application, ApplicationsList, Calendar } from 'tutors' // todo: convert to tutors/view
+import AdminView from 'admin/views'
 
 @connect(state => ({
   auth: state.auth
@@ -48,11 +49,11 @@ class HomeComponent extends React.Component {
 
         <div className="container">
           <Switch>
-            {visibleToAdmin && <Route path={r.courses} component={CoursesList} />}
-            {visibleToAdmin && <Route path={r.users} component={UsersList} />}
+            {visibleToAdmin && <AdminView />}
 
             {visibleToTutor && <Route exact path={r.applications} component={ApplicationsList} />}
             {visibleToTutor && <Route path={r.application} component={Application} />}
+            {visibleToTutor && <Route path={r.calendar} component={Calendar} />}
 
             <Route component={NotFound} />
           </Switch>

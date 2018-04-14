@@ -3,10 +3,9 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
 import { actions as modalActions } from 'common/components/Modal/redux'
-import CourseEditModal from './components/CourseEditModal'
+import CourseEditModal from './CourseEditModal'
 import CoursesListComponent from './component'
 import { actions as coursesActions } from '../../redux/courses'
-import { actions as usersActions } from '../../redux/users'
 
 @connect(state => ({
   auth: state.auth,
@@ -22,12 +21,6 @@ class CoursesList extends React.Component {
   state = {
     activeCourseId: null,
     searchFilter: ''
-  }
-
-  componentDidMount() {
-    const { dispatch } = this.props
-    dispatch(coursesActions.getCourses())
-    dispatch(usersActions.getUsers('tutors')) // todo: improve getUsers
   }
 
   handleFilterChange = ({ target }) => {

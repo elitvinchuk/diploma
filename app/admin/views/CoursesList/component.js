@@ -1,6 +1,7 @@
+import Loader from 'common/components/Loader'
 import PropTypes from 'prop-types'
 import React from 'react'
-import CourseEditModal from './components/CourseEditModal'
+import CourseEditModal from './CourseEditModal'
 
 const CourseListComponent = ({
   activeCourseId,
@@ -37,18 +38,22 @@ const CourseListComponent = ({
         </div>
       </div>
 
-      <div className="list-group list-group-flush">
-        {filteredIds.map(id => (
-          <a
-            key={id}
-            onClick={openModal(id)}
-            href="#"
-            className="list-group-item list-group-item-action"
-          >
-            {courses[id].name}
-          </a>
-        ))}
-      </div>
+      {filteredIds.length ? (
+        <div className="list-group list-group-flush">
+          {filteredIds.map(id => (
+            <a
+              key={id}
+              onClick={openModal(id)}
+              href="#"
+              className="list-group-item list-group-item-action"
+            >
+              {courses[id].name}
+            </a>
+          ))}
+        </div>
+      ) : (
+        <Loader fullscreen />
+      )}
 
       <CourseEditModal
         courseId={activeCourseId}
