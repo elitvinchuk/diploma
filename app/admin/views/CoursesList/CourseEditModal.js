@@ -1,56 +1,24 @@
-import { arrayToObject, objectToArray } from 'common/utils/converters'
-import React from 'react'
 import { Modal } from 'common/components'
+import dictionary from 'common/dictionary'
 import { Checkbox, File, Input, Select } from 'common/form-controls'
+import { arrayToObject, objectToArray } from 'common/utils/converters'
 import { required } from 'common/utils/validators'
-import { connect } from 'react-redux'
-import { Field, reduxForm } from 'redux-form'
+import React from 'react'
 import PropTypes from 'prop-types'
+import { Field } from 'redux-form'
 
-const examTypes = [
-  {
-    value: 'test',
-    label: 'Зачёт'
-  },
-  {
-    value: 'diffTest',
-    label: 'Дифферинцированный зачёт'
-  },
-  {
-    value: 'exam',
-    label: 'Экзамен'
-  }
-]
+const examTypes = objectToArray(dictionary.examTypes)
 
-const CourseEditModal = ({
-  closeModal,
-  courseId,
-  handleSubmit,
-  onDeleteCourse,
-  // initialValues: { createdAt, createdBy, editedAt, editedBy },
-  users
-}) => {
-  const iterableTutors = Object.keys(users).reduce((usersArray, userId) => {
-    const { displayName, roles } = users[userId]
-    if (roles.tutor) {
-      usersArray.push({
-        value: userId,
-        label: displayName
-      })
-    }
-
-    return usersArray
-  }, [])
-
-  return (
-    <Modal
-      modalId={CourseEditModal.id}
-      contentLabel={`${courseId ? 'Редактирование' : 'Добавление'} предмета`}
-    >
-      <form onSubmit={handleSubmit}>
-        <div className="modal-body">
-          {/* Hide under meta collapsible*/}
-          {/*courseId && (
+const CourseEditModal = ({ course, form, onRequestClose, onSubmit, tutorsArray }) => (
+  <Modal
+    form={form}
+    contentLabel={`${course ? 'Редактирование' : 'Добавление'} предмета`}
+    initialValues={course}
+    onRequestClose={onRequestClose}
+    onSubmit={onSubmit}
+  >
+    {/* Hide under meta collapsible*/}
+    {/*courseId && (
             <dl className="row">
               {createdAt && (
                 <>
@@ -78,123 +46,77 @@ const CourseEditModal = ({
             </dl>
           )*/}
 
-          <Field
-            name="name"
-            component={Input}
-            label="Название дисциплины"
-            validate={required}
-            autoFocus={!courseId}
-          />
-          <Field
-            name="tutors"
-            component={Select}
-            label="Преподаватели"
-            multi
-            normalize={arrayToObject}
-            format={objectToArray}
-            options={iterableTutors}
-            validate={required}
-          />
-          <Field
-            name="manual"
-            component={File}
-            label="Методические пособия"
-            // validate={required}
-          />
-          <div className="form-row">
-            <Field
-              name="controlWorksAmount"
-              component={Input}
-              className="col-md-4"
-              type="number"
-              label="Контрольные"
-              validate={required}
-            />
-            <Field
-              name="individualWorksAmount"
-              component={Input}
-              className="col-md-4"
-              type="number"
-              label="Индивидуальные"
-              validate={required}
-            />
-            <Field
-              name="courseHourse"
-              component={Input}
-              className="col-md-4"
-              type="number"
-              label="Часы"
-              validate={required}
-            />
-          </div>
+    <Field
+      name="name"
+      component={Input}
+      label="Название дисциплины"
+      validate={required}
+      autoFocus={!course}
+    />
+    <Field
+      name="tutors"
+      component={Select}
+      label="Преподаватели"
+      multi
+      normalize={arrayToObject}
+      format={objectToArray}
+      options={tutorsArray}
+      validate={required}
+    />
+    <Field name="manual" component={File} label="Методические пособия" validate={required} />
+    <div className="form-row">
+      <Field
+        name="controlWorksAmount"
+        component={Input}
+        className="col-md-4"
+        type="number"
+        label="Контрольные"
+        validate={required}
+      />
+      <Field
+        name="individualWorksAmount"
+        component={Input}
+        className="col-md-4"
+        type="number"
+        label="Индивидуальные"
+        validate={required}
+      />
+      <Field
+        name="courseHours"
+        component={Input}
+        className="col-md-4"
+        type="number"
+        label="Часы"
+        validate={required}
+      />
+    </div>
 
-          <Field
-            name="type"
-            component={Select}
-            label="Тип дисциплины"
-            options={examTypes}
-            validate={required}
-          />
+    <Field
+      name="type"
+      component={Select}
+      label="Тип дисциплины"
+      options={examTypes}
+      validate={required}
+    />
 
-          <div className="form-row">
-            <Field
-              name="courseProject"
-              component={Checkbox}
-              label="Курсовой проект"
-              className="col-md-6"
-            />
-            <Field
-              name="courseWork"
-              component={Checkbox}
-              label="Курсовая работа"
-              className="col-md-6"
-            />
-          </div>
-        </div>
-
-        <div className="modal-footer">
-          {courseId && (
-            <button onClick={onDeleteCourse(courseId)} type="button" className="btn btn-danger">
-              <span className="oi oi-trash" />
-            </button>
-          )}
-          <button type="submit" className="btn btn-primary">
-            Сохранить изменения
-          </button>
-          <button onClick={closeModal} type="button" className="btn btn-secondary">
-            Закрыть
-          </button>
-        </div>
-      </form>
-    </Modal>
-  )
-}
+    <div className="form-row">
+      <Field
+        name="courseProject"
+        component={Checkbox}
+        label="Курсовой проект"
+        className="col-md-6"
+      />
+      <Field name="courseWork" component={Checkbox} label="Курсовая работа" className="col-md-6" />
+    </div>
+  </Modal>
+)
 
 CourseEditModal.propTypes = {
-  closeModal: PropTypes.func,
-  courseId: PropTypes.string,
-  handleSubmit: PropTypes.func.isRequired,
-  onDeleteCourse: PropTypes.func.isRequired,
-  initialValues: PropTypes.shape({
-    createdAt: PropTypes.number,
-    createdBy: PropTypes.string,
-    editedAt: PropTypes.number,
-    editedBy: PropTypes.string
-  }),
-  users: PropTypes.object
+  course: PropTypes.object,
+  form: PropTypes.string.isRequired,
+  onRequestClose: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  tutorsArray: PropTypes.array
 }
 
-CourseEditModal.id = 'course-edit'
-
-CourseEditModal.defaultProps = {
-  users: {}
-}
-
-export default connect(state => ({
-  users: state.users
-}))(
-  reduxForm({
-    enableReinitialize: true,
-    form: CourseEditModal.id
-  })(CourseEditModal)
-)
+export default CourseEditModal

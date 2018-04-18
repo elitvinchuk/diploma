@@ -1,6 +1,8 @@
 import { actions as usersActions } from 'admin/redux/users'
-import UserEditModal from './UserEditModal'
-import { Loader } from 'common/components'
+import { Select } from 'common/form-controls'
+import { flattenArray } from 'common/utils/converters'
+import { Field } from 'redux-form'
+import { Loader, Modal } from 'common/components'
 import { actions as modalActions } from 'common/components/Modal/redux'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -22,6 +24,8 @@ class UsersList extends React.Component {
     users: PropTypes.object
   }
 
+  userEditModalId = 'user-edit'
+
   state = {
     activeUserId: null,
     textFilter: '',
@@ -41,25 +45,24 @@ class UsersList extends React.Component {
   }
 
   handleRoleChangeRequest = userId => (roles, changedRole) => {
-    if (userId === this.props.auth.uid && changedRole === 'admin') {
-      // if (!confirm('Вы сейчас убираете роль администратора с себя. Вы уверены?')) return
-      if (confirm('Вы сейчас убираете роль администратора с себя. Вы уверены?')) {
-        this.toggleRole(userId, roles)
-      }
-    } else {
-      this.toggleRole(userId, roles)
-    }
-  }
+    if (
+      userId === this.props.auth.uid &&
+      changedRole === 'admin' &&
+      !confirm('Вы сейчас убираете роль администратора с себя. Вы уверены?')
+    )
+      return
 
-  toggleRole = (userId, roles) => {
-    const mapifiedRoles = roles.reduce((rolesMap, role) => {
+    const rolesAsMap = roles.reduce((rolesMap, role) => {
       rolesMap[role] = true
 
       return rolesMap
     }, {})
 
-    return this.props.dispatch(usersActions.toggleUserRole(userId, mapifiedRoles))
+    this.props.dispatch(usersActions.updateUser(userId, { roles: rolesAsMap }))
   }
+
+  updateUser = data =>
+    this.props.dispatch(usersActions.updateUser(this.state.activeUserId, { courses: data.courses }))
 
   handleOpenModal = activeUserId => () => {
     this.setState(
@@ -67,9 +70,15 @@ class UsersList extends React.Component {
         activeUserId
       },
       () => {
-        this.props.dispatch(modalActions.open(UserEditModal.id))
+        this.props.dispatch(modalActions.open(this.userEditModalId))
       }
     )
+  }
+
+  handleCloseModal = () => {
+    this.setState({
+      activeUserId: null
+    })
   }
 
   render() {
@@ -79,8 +88,9 @@ class UsersList extends React.Component {
       return <Loader fullscreen />
     }
 
-    const { textFilter, roleFilter } = this.state
+    const { activeUserId, textFilter, roleFilter } = this.state
 
+    //region todo: move to cdm or so, out of render
     const userIds = Object.keys(users)
     const filteredIds = userIds.filter(id => {
       const { displayName, email, roles } = users[id]
@@ -91,18 +101,47 @@ class UsersList extends React.Component {
       return stringValue.includes(textFilter.toUpperCase()) && roleMatch
     })
 
+    const coursesAsOptions = Object.keys(courses).reduce((coursesArray, courseId) => {
+      const { name } = courses[courseId]
+      coursesArray.push({
+        value: courseId,
+        label: name
+      })
+
+      return coursesArray
+    }, [])
+    //endregion
+
     return (
-      <UsersListComponent
-        courses={courses}
-        filteredIds={filteredIds}
-        handleTextChange={this.handleTextChange}
-        handleRoleChangeRequest={this.handleRoleChangeRequest}
-        handleRoleFilterChange={this.handleRoleFilterChange}
-        textFilter={textFilter}
-        roleFilter={roleFilter}
-        users={users}
-        openModal={this.handleOpenModal}
-      />
+      <>
+        <UsersListComponent
+          filteredIds={filteredIds}
+          handleTextChange={this.handleTextChange}
+          handleRoleFilterChange={this.handleRoleFilterChange}
+          handleRoleChangeRequest={this.handleRoleChangeRequest}
+          textFilter={textFilter}
+          roleFilter={roleFilter}
+          users={users}
+          openModal={this.handleOpenModal}
+        />
+
+        <Modal
+          form={this.userEditModalId}
+          contentLabel="Назначить предмет"
+          initialValues={users[activeUserId] || {}}
+          onRequestClose={this.handleCloseModal}
+          onSubmit={this.updateUser}
+        >
+          <Field
+            name="courses"
+            component={Select}
+            label="Предметы"
+            multi
+            normalize={flattenArray}
+            options={coursesAsOptions}
+          />
+        </Modal>
+      </>
     )
   }
 }

@@ -12,3 +12,5 @@ export const objectToArray = valueMap =>
         value
       }))
     : []
+
+export const flattenArray = values => values.map(course => course.value)

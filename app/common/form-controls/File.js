@@ -1,5 +1,6 @@
 // todo: make cool UI for that component
-// todo: impement upload progress
+// todo: implement upload progress
+// todo: add validation message
 import React from 'react'
 import PropTypes from 'prop-types'
 import { storageRef } from 'firebaseConfig'

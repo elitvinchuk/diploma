@@ -1,9 +1,12 @@
+// todo: add validation message
+
+import cx from 'classnames'
 import React from 'react'
 import PropTypes from 'prop-types'
 import Select from 'react-select'
 
 const inputRenderer = props => (
-  <div  key="input-wrap" style={{ display: 'inline-block' }}>
+  <div key="input-wrap" style={{ display: 'inline-block' }}>
     <input id={props.id} {...props} className={'form-control'} />
   </div>
 )
@@ -12,7 +15,7 @@ const SelectComponent = ({
   input: { name, onChange, value },
   label,
   labelKey,
-  meta: { error, touched },
+  meta: { error, touched }, meta,
   multi,
   options
 }) => (
@@ -31,6 +34,7 @@ const SelectComponent = ({
       clearAllText="Очистить"
       // inputRenderer={inputRenderer}
       autosize={false}
+      // className={cx('form-control', { 'is-invalid': error && touched })}
     />
     {error && touched && <div className="invalid-feedback">{error}</div>}
   </div>

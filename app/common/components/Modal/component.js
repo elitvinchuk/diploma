@@ -1,73 +1,68 @@
+import cx from 'classnames'
 import PropTypes from 'prop-types'
 import React from 'react'
 import ReactModal from 'react-modal'
-import cx from 'classnames'
+
+ReactModal.setAppElement('#root')
 
 const ModalComponent = ({
   children,
   contentLabel,
   handleClose,
-  onAfterOpen,
-  // triggerSubmit,
+  handleSubmit,
+  submitting,
   visible
 }) => (
-  <>
-    <ReactModal
-      isOpen={visible}
-      onAfterOpen={onAfterOpen}
-      contentLabel={contentLabel}
-      portalClassName={cx('modal', {
-        'd-block': visible
-      })}
-      overlayClassName="modal-dialog modal-dialog-centered"
-      className="modal-content"
-      bodyOpenClassName="modal-open"
-      htmlOpenClassName={null}
-      aria={null}
-      role="dialog"
-    >
-      <div className="modal-header">
-        <h5 className="modal-title">{contentLabel}</h5>
-        <button type="button" className="close" aria-label="Close" onClick={handleClose}>
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-
-      {children}
-
-      {/*<div className="modal-body">{children}</div>
+  <ReactModal
+    isOpen={visible}
+    contentLabel={contentLabel}
+    onRequestClose={handleClose}
+    portalClassName={cx('modal', {
+      'd-block': visible
+    })}
+    overlayClassName="modal-dialog modal-dialog-centered" // todo: deal with out click overlay
+    className="modal-content"
+    bodyOpenClassName="modal-open"
+    htmlOpenClassName={null}
+    aria={null}
+    role="dialog"
+  >
+    <div className="modal-header">
+      <h5 className="modal-title">{contentLabel}</h5>
+      <button type="button" className="close" aria-label="Close" onClick={handleClose}>
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <form onSubmit={handleSubmit}>
+      <div className="modal-body">{children}</div>
 
       <div className="modal-footer">
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={triggerSubmit}
-        >
+        <button type="submit" className="btn btn-primary" disabled={submitting}>
           Сохранить изменения
         </button>
         <button
           type="button"
           className="btn btn-secondary"
           onClick={handleClose}
+          disabled={submitting}
         >
           Отмена
         </button>
-      </div>*/}
-    </ReactModal>
-    {visible && <div className="modal-backdrop fade show" />}
-  </>
+      </div>
+    </form>
+  </ReactModal>
+  /*{visible && <div className="modal-backdrop fade show" />}
+  </>*/
 )
 
 ModalComponent.propTypes = {
   children: PropTypes.node,
   contentLabel: PropTypes.string,
+  form: PropTypes.string.isRequired,
   handleClose: PropTypes.func,
-  modalId: PropTypes.string.isRequired,
-  onAfterOpen: PropTypes.func,
-  // triggerSubmit: PropTypes.func.isRequired,
-  visible: PropTypes.bool.isRequired
+  handleSubmit: PropTypes.func.isRequired,
+  submitting: PropTypes.bool,
+  visible: PropTypes.bool
 }
-
-ModalComponent.setAppElement = ReactModal.setAppElement
 
 export default ModalComponent

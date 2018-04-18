@@ -22,6 +22,7 @@ export const actions = {
       })
     })
   },
+  // todo: remove and utilize action creator below
   toggleUserRole: (userId, roles) => dispatch => {
     usersRef
       .doc(userId)
@@ -35,10 +36,22 @@ export const actions = {
           }
         })
       })
-  }
+  },
+  // todo: unify with stuff above
+  updateUser: (userId, data) => dispatch =>
+    usersRef
+      .doc(userId)
+      .update(data)
+      .then(() => {
+        dispatch({
+          type: types.UPDATE_USER,
+          payload: {
+            userId,
+            ...data
+          }
+        })
+      })
 }
-
-export const getTutors = () => dispatch => {}
 
 export default (state = {}, action) => {
   switch (action.type) {
@@ -46,9 +59,16 @@ export default (state = {}, action) => {
       return action.payload
     }
 
-    case types.UPDATE_USER: {
+    /*case types.UPDATE_USER: {
       const { userId, roles } = action.payload
+
       return dot.set(state, `${userId}.roles`, roles)
+    }*/
+
+    case types.UPDATE_USER: {
+      const { userId, ...data } = action.payload
+
+      return dot.merge(state, userId, data)
     }
 
     default:

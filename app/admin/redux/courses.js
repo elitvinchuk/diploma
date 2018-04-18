@@ -32,7 +32,7 @@ export const actions = {
       ...courseData,
       createdAt: Date.now(), // todo: update withFieldValue.serverTimestamp(),
       createdBy: creator,
-      manual: manual.name
+      manual: manual?.name // todo: remove optional chaining after field is required
     }
 
     const courseManualUploadTask = storageRef
@@ -54,9 +54,9 @@ export const actions = {
   editCourse: ({ manual, ...courseData }, editor) => dispatch => {
     const editedCourse = {
       ...courseData,
-      editedAt: Date.now(), // todo: update withFieldValue.serverTimestamp(),
+      editedAt: Date.now(), // todo: update wit§hFieldValue.serverTimestamp(),
       editedBy: editor,
-      manual: manual.name
+      manual: manual?.name // todo: remove optional chaining after field is required
     }
 
     const courseDataRequest = coursesRef.doc(courseData.id).set(editedCourse)

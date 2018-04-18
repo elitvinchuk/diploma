@@ -1,4 +1,5 @@
-import { CoursesList, UsersList } from 'admin/views'
+import { actions as coursesActions } from 'admin/redux/courses'
+import { actions as usersActions } from 'admin/redux/users'
 import { ErrorBoundary, Header, NotFound } from 'common/components'
 import PropTypes from 'prop-types'
 import React from 'react'
@@ -13,7 +14,14 @@ import AdminView from 'admin/views'
 }))
 class HomeComponent extends React.Component {
   static propTypes = {
-    auth: PropTypes.object
+    auth: PropTypes.object,
+    dispatch: PropTypes.func
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props
+    dispatch(coursesActions.getCourses())
+    dispatch(usersActions.getUsers())
   }
 
   render() {

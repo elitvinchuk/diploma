@@ -1,18 +1,9 @@
 import Loader from 'common/components/Loader'
 import PropTypes from 'prop-types'
 import React from 'react'
-import CourseEditModal from './CourseEditModal'
 
-const CourseListComponent = ({
-  activeCourseId,
-  closeModal,
-  courses,
-  onDeleteCourse,
-  onSubmitCourse,
-  openModal,
-  searchFilter,
-  handleFilterChange
-}) => {
+const CourseListComponent = ({ courses, openModal, searchFilter, handleFilterChange }) => {
+  // todo: consider moving dat out
   const coursesIds = Object.keys(courses)
   const filteredIds = coursesIds
     .filter(id => courses[id].name.toUpperCase().includes(searchFilter.toUpperCase()))
@@ -22,6 +13,7 @@ const CourseListComponent = ({
     <>
       <h1 className="mb-3 mt-3 display-4">Предметы</h1>
 
+      {/* todo: consider using redux form here */}
       <div className="input-group input-group-lg mb-4">
         <input
           type="text"
@@ -54,25 +46,14 @@ const CourseListComponent = ({
       ) : (
         <Loader fullscreen />
       )}
-
-      <CourseEditModal
-        courseId={activeCourseId}
-        initialValues={courses[activeCourseId] || {}}
-        onSubmit={onSubmitCourse}
-        onDeleteCourse={onDeleteCourse}
-        closeModal={closeModal}
-      />
     </>
   )
 }
 
 CourseListComponent.propTypes = {
-  closeModal: PropTypes.func,
   searchFilter: PropTypes.string,
   handleFilterChange: PropTypes.func.isRequired,
   courses: PropTypes.object.isRequired,
-  onDeleteCourse: PropTypes.func.isRequired,
-  onSubmitCourse: PropTypes.func.isRequired,
   openModal: PropTypes.func.isRequired
 }
 

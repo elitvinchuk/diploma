@@ -19,7 +19,8 @@ const ButtonGroup = ({ activeClass, ariaLabel, className, onChange, options, siz
         className={cx('btn btn-secondary', {
           [activeClass]: value.includes(key)
         })}
-        onClick={() => {
+        onClick={event => {
+          event.stopPropagation()
           const newValue = [...value]
           const index = newValue.indexOf(key)
           if (~index) {

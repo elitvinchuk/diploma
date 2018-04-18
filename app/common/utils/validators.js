@@ -1,2 +1,4 @@
+import isEmpty from 'lodash/isEmpty'
+
 export const required = value =>
-  value ? undefined : 'Это поле необходимо заполнить'
+  !value || isEmpty(value) ? 'Это поле необходимо заполнить' : undefined

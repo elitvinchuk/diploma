@@ -1,19 +1,26 @@
 import { connect } from 'react-redux'
 import ModalComponent from './component'
-import { actions as popupActions, selectors } from './redux'
-import { submit } from 'redux-form'
+import { actions as modalAction, selectors } from './redux'
+import { reduxForm } from 'redux-form'
 
-const mapStateToProps = (state, { modalId }) => ({
-  visible: !!selectors.modalIsVisible(state.modal, modalId)
+const mapStateToProps = (state, { form }) => ({
+  visible: !!selectors.modalIsVisible(state.modal, form)
 })
 
-const mapDispatchToProps = (dispatch, { modalId }) => ({
+const mapDispatchToProps = (dispatch, { form, onRequestClose }) => ({
   handleClose() {
-    dispatch(popupActions.close(modalId))
-  },
-  triggerSubmit() {
-    dispatch(submit(modalId))
+    dispatch(modalAction.close(form))
+    onRequestClose?.()
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ModalComponent)
+const onSubmitSuccess = (result, dispatch, props) => {
+  // todo: deal with dat copy&paste
+  dispatch(modalAction.close(props.form))
+  props.onRequestClose?.()
+}
+
+export default reduxForm({
+  enableReinitialize: true,
+  onSubmitSuccess
+})(connect(mapStateToProps, mapDispatchToProps)(ModalComponent))

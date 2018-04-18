@@ -3,10 +3,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import dict from 'common/dictionary'
 import UserpicPlaceholder from 'common/assets/userpic-placeholder.jpg'
-import UserEditModal from './UserEditModal'
 
 const UsersListComponent = ({
-  courses,
   filteredIds,
   handleTextChange,
   handleRoleChangeRequest,
@@ -19,6 +17,7 @@ const UsersListComponent = ({
   <>
     <h1 className="mb-3 mt-3 display-4">Пользователи</h1>
 
+    {/**/}
     <form className="form-inline d-flex mb-4">
       <input
         type="text"
@@ -36,7 +35,7 @@ const UsersListComponent = ({
       />
       {/* todo: Implement creation logic */}
     </form>
-    <table className="users-table table">
+    <table className="users-table table table-hover">
       <thead>
         <tr>
           <th />
@@ -75,12 +74,10 @@ const UsersListComponent = ({
         })}
       </tbody>
     </table>
-    <UserEditModal courses={courses} />
   </>
 )
 
 UsersListComponent.propTypes = {
-  courses: PropTypes.object,
   filteredIds: PropTypes.array,
   handleTextChange: PropTypes.func.isRequired,
   handleRoleChangeRequest: PropTypes.func.isRequired,
