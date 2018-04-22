@@ -51,27 +51,48 @@ export const actions = {
       })
     })
   },
-  editCourse: ({ manual, ...courseData }, editor) => dispatch => {
-    const editedCourse = {
-      ...courseData,
-      editedAt: Date.now(), // todo: update wit§hFieldValue.serverTimestamp(),
-      editedBy: editor,
-      manual: manual?.name // todo: remove optional chaining after field is required
-    }
+  editCourse: ({ id, manual, ...courseData }, editedBy) => {
+    return dispatch => {
+      // todo: LOW update with only diff, not all data
+      const editedCourse = {
+        ...courseData,
+        editedAt: Date.now(), // todo: LOW update withFieldValue.serverTimestamp()
+        editedBy
+      }
 
-    const courseDataRequest = coursesRef.doc(courseData.id).set(editedCourse)
-    const courseManualUploadTask = storageRef
-      .child(/* courseData.id */ `manuals/${manual.name}`) // todo: add manual to with course id folder
-      .put(manual)
+      const newManualToUpload = manual instanceof File
+      const requests = []
 
-    return Promise.all([courseDataRequest, courseManualUploadTask]).then(() => {
-      dispatch({
-        type: constants.EDIT,
-        payload: editedCourse
+      if (newManualToUpload) {
+        // todo: remove previously uploaded attachment if value changed
+        editedCourse.manual = manual.name
+
+        const courseManualUploadTask = storageRef
+          .child(
+            /* courseData.id */
+            `manuals/${manual.name}`
+          ) // todo: add manual to with course id folder
+          .put(manual)
+
+        requests.push(courseManualUploadTask)
+      }
+
+      const courseDataRequest = coursesRef.doc(id).update(editedCourse)
+      requests.push(courseDataRequest)
+
+      return Promise.all(requests).then(() => {
+        dispatch({
+          type: constants.EDIT,
+          payload: {
+            id,
+            ...editedCourse
+          }
+        })
       })
-    })
+    }
   },
   deleteCourse: courseId => dispatch => {
+    // todo: simplify. get data from store not from .get()
     return coursesRef
       .doc(courseId)
       .get()

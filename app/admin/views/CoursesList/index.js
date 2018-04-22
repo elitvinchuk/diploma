@@ -44,10 +44,7 @@ class CoursesList extends React.Component {
       actionCreator = coursesActions.createCourse(course, auth.uid)
     }
 
-    const requestPromise = dispatch(actionCreator)
-    requestPromise.then(this.handleSuccessfulAction)
-
-    return requestPromise
+    return dispatch(actionCreator)
   }
 
   // todo: add remove button
@@ -94,14 +91,11 @@ class CoursesList extends React.Component {
     return (
       <>
         <CoursesListComponent
-          // activeCourseId={activeCourseId}
           searchFilter={searchFilter}
           handleFilterChange={this.handleFilterChange}
           courses={this.props.courses}
           // onDeleteCourse={this.handleDeleteCourse}
-          // onSubmitCourse={this.handleSubmitCourse}
           openModal={this.handleOpenModal}
-          // closeModal={this.handleCloseModal}
         />
 
         <CourseEditModal

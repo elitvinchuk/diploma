@@ -6,6 +6,12 @@ export default {
   application: '/applications/:id',
   calendar: '/calendar',
 
-  courses: '/courses',
-  users: '/users'
+  admin: {
+    courses: '/admin/courses',
+    users: '/admin/users'
+  },
+
+  student: {
+    courses: '/student/courses'
+  }
 }

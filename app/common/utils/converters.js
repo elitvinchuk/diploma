@@ -14,3 +14,5 @@ export const objectToArray = valueMap =>
     : []
 
 export const flattenArray = values => values.map(course => course.value)
+
+export const objectToValue = object => object.value

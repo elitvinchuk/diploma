@@ -1,6 +1,7 @@
 // todo: make cool UI for that component
 // todo: implement upload progress
 // todo: add validation message
+// todo: make required working
 import React from 'react'
 import PropTypes from 'prop-types'
 import { storageRef } from 'firebaseConfig'
@@ -19,6 +20,7 @@ class FileInput extends React.Component {
     const { value } = this.props.input
 
     if (value) {
+      // todo: add loading spinner
       storageRef
         .child(`manuals/${value}`)
         .getDownloadURL()
@@ -47,7 +49,7 @@ class FileInput extends React.Component {
           onBlur={this.adaptFileEventToValue(onBlur)}
           {...inputProps}
         />
-        {downloadUrl && <a href={downloadUrl}>{value}</a>}
+        {downloadUrl && <a href={downloadUrl}>{JSON.stringify(value)}</a>}
         {/* <div className="progress">
           <div
             className="progress-bar progress-bar-striped progress-bar-animated"

@@ -1,0 +1,1 @@
+export StudentCoursesList from './CoursesList'

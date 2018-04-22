@@ -28,7 +28,7 @@ export const actions = {
   listenToAuthChanges: () => dispatch => {
     auth.onAuthStateChanged(auth => {
       if (auth) {
-        const userRef = usersRef.doc(auth.uid)
+        /*const userRef = usersRef.doc(auth.uid)
 
         userRef.get().then(doc => {
           const user = doc.data()
@@ -56,6 +56,10 @@ export const actions = {
               })
             })
           }
+        })*/
+        dispatch({
+          type: constants.SIGNED_IN,
+          payload: auth.uid
         })
       } else {
         dispatch({
@@ -67,9 +71,8 @@ export const actions = {
 }
 
 export const selectors = {
-  isAuthenticated(state) {
-    return state.auth.status === constants.SIGNED_IN
-  }
+  getAuthenticatedUser: state => state.users[state.auth.uid],
+  isAuthenticated: state => state.auth.status === constants.SIGNED_IN
 }
 
 const initialState = {
@@ -85,7 +88,7 @@ export default (state = initialState, action) => {
 
     case constants.SIGNED_IN: {
       return {
-        ...action.payload,
+        uid: action.payload,
         status: constants.SIGNED_IN,
         redirectToReferrer: true
       }

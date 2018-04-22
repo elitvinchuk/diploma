@@ -2,7 +2,7 @@ import React from 'react'
 import { func, node, object } from 'prop-types'
 import Logo from 'common/assets/logo.png'
 
-const HeaderComponent = ({ auth, children, signOut }) => (
+const HeaderComponent = ({ children, signOut, user }) => (
   <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
     <a className="navbar-brand" href="#">
       <img src={Logo} className="rounded-circle" height={30} width={30} />
@@ -37,15 +37,12 @@ const HeaderComponent = ({ auth, children, signOut }) => (
             aria-haspopup="true"
             aria-expanded="false"
           >
-            {auth.displayName || 'Преподаватель'}
+            {user.displayName || 'Пользователь'}
           </a>
-          <div
-            className="dropdown-menu dropdown-menu-right"
-            aria-labelledby="navbarDropdown"
-          >
-            <a className="dropdown-item disabled" href="#">
+          <div className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+            {/*<a className="dropdown-item disabled" href="#">
               <span className="oi oi-cog" /> Настройки
-            </a>
+            </a>*/}
             {/*<div className="dropdown-divider" />*/}
             <a className="dropdown-item" href="#" onClick={signOut}>
               <span className="oi oi-account-logout" /> Выйти
@@ -58,9 +55,9 @@ const HeaderComponent = ({ auth, children, signOut }) => (
 )
 
 HeaderComponent.propTypes = {
-  auth: object.isRequired,
   children: node,
-  signOut: func.isRequired
+  signOut: func.isRequired,
+  user: object.isRequired
 }
 
 export default HeaderComponent
