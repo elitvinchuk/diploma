@@ -10,6 +10,7 @@ const ModalComponent = ({
   contentLabel,
   handleClose,
   handleSubmit,
+  submitButtonText,
   submitting,
   visible
 }) => (
@@ -38,7 +39,7 @@ const ModalComponent = ({
 
       <div className="modal-footer">
         <button type="submit" className="btn btn-primary" disabled={submitting}>
-          Сохранить изменения
+          {submitButtonText}
         </button>
         <button
           type="button"
@@ -61,8 +62,13 @@ ModalComponent.propTypes = {
   form: PropTypes.string.isRequired,
   handleClose: PropTypes.func,
   handleSubmit: PropTypes.func.isRequired,
+  submitButtonText: PropTypes.string,
   submitting: PropTypes.bool,
   visible: PropTypes.bool
+}
+
+ModalComponent.defaultProps = {
+  submitButtonText: 'Сохранить изменения'
 }
 
 export default ModalComponent

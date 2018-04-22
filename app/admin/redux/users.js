@@ -22,22 +22,6 @@ export const actions = {
       })
     })
   },
-  // todo: remove and utilize action creator below
-  toggleUserRole: (userId, roles) => dispatch => {
-    usersRef
-      .doc(userId)
-      .update({ roles })
-      .then(() => {
-        dispatch({
-          type: types.UPDATE_USER,
-          payload: {
-            userId,
-            roles
-          }
-        })
-      })
-  },
-  // todo: unify with stuff above
   updateUser: (userId, data) => dispatch =>
     usersRef
       .doc(userId)
@@ -58,12 +42,6 @@ export default (state = {}, action) => {
     case types.SET_USERS: {
       return action.payload
     }
-
-    /*case types.UPDATE_USER: {
-      const { userId, roles } = action.payload
-
-      return dot.set(state, `${userId}.roles`, roles)
-    }*/
 
     case types.UPDATE_USER: {
       const { userId, ...data } = action.payload

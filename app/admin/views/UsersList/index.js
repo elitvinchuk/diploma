@@ -61,6 +61,7 @@ class UsersList extends React.Component {
     this.props.dispatch(usersActions.updateUser(userId, { roles: rolesAsMap }))
   }
 
+  // todo: move to mapDispatchToProps and seek for other places
   updateUser = data =>
     this.props.dispatch(usersActions.updateUser(this.state.activeUserId, { courses: data.courses }))
 
