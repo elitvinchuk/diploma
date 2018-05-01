@@ -9,8 +9,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { NavLink, Redirect, Route, Switch } from 'react-router-dom'
 import r from 'routes'
-import { Application, ApplicationsList, Calendar } from 'tutor' // todo: convert to tutors/view
-import { StudentCoursesList } from 'student/views'
+import { Application, ApplicationsList, Calendar } from 'tutor/views'
+import { ApplicationItem, StudentCoursesList } from 'student/views'
+import { actions as studentActions } from 'student/redux/applications'
 
 @connect(state => ({
   user: selectors.getAuthenticatedUser(state)
@@ -24,7 +25,11 @@ class HomeComponent extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props
     dispatch(coursesActions.getCourses())
-    dispatch(usersActions.getUsers())
+    dispatch(usersActions.getUsers()).then(() => {
+      if (this.props.user.roles['student']) {
+        dispatch(studentActions.getApplications())
+      }
+    })
   }
 
   render() {
@@ -34,19 +39,17 @@ class HomeComponent extends React.Component {
       return <Loader fullscreen />
     }
 
-    const visibleToAdmin = user.roles['admin']
-    const visibleToStudent = user.roles['student']
-    const visibleToTutor = user.roles['tutor']
-
     // todo: LOW consider moving to cdu
-    const redirectRoute = visibleToAdmin
-      ? r.admin.courses
-      : visibleToTutor ? r.courses : r.student.courses
+    const isAdmin = this.props.user.roles['admin']
+    const isStudent = this.props.user.roles['student']
+    const isTutor = this.props.user.roles['tutor']
+
+    const redirectRoute = isAdmin ? r.admin.courses : isTutor ? r.courses : r.student.courses
 
     return (
       <ErrorBoundary>
         <Header user={user}>
-          {visibleToAdmin && (
+          {isAdmin && (
             <>
               <NavLink to={r.admin.courses} className="nav-item nav-link">
                 Предметы
@@ -56,18 +59,18 @@ class HomeComponent extends React.Component {
               </NavLink>
             </>
           )}
-          {visibleToTutor && (
+          {isTutor && (
             <>
-              <NavLink to={r.applications} className="nav-item nav-link">
+              <NavLink to={r.tutors.applications} className="nav-item nav-link">
                 Обращения
               </NavLink>
-              <NavLink to={r.calendar} className="nav-item nav-link">
+              <NavLink to={r.tutors.calendar} className="nav-item nav-link">
                 Календарь
               </NavLink>
             </>
           )}
-          {visibleToStudent && (
-            <NavLink to={r.student.courses} className="nav-item nav-link">
+          {isStudent && (
+            <NavLink to={r.student.applications} className="nav-item nav-link">
               Предметы
             </NavLink>
           )}
@@ -75,14 +78,17 @@ class HomeComponent extends React.Component {
 
         <div className="container">
           <Switch>
-            {visibleToAdmin && <Route path={r.admin.courses} component={AdminCoursesList} />}
-            {visibleToAdmin && <Route path={r.admin.users} component={UsersList} />}
+            {isAdmin && <Route path={r.admin.courses} component={AdminCoursesList} />}
+            {isAdmin && <Route path={r.admin.users} component={UsersList} />}
 
-            {visibleToTutor && <Route exact path={r.applications} component={ApplicationsList} />}
-            {visibleToTutor && <Route path={r.application} component={Application} />}
-            {visibleToTutor && <Route path={r.calendar} component={Calendar} />}
+            {isTutor && <Route exact path={r.tutors.applications} component={ApplicationsList} />}
+            {isTutor && <Route path={r.tutors.application} component={Application} />}
+            {isTutor && <Route path={r.tutors.calendar} component={Calendar} />}
 
-            {visibleToStudent && <Route path={r.student.courses} component={StudentCoursesList} />}
+            {isStudent && (
+              <Route exact path={r.student.applications} component={StudentCoursesList} />
+            )}
+            {isStudent && <Route path={r.student.application} component={ApplicationItem} />}
 
             <Redirect from={r.index} to={redirectRoute} />
 

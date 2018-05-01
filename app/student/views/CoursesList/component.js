@@ -16,7 +16,7 @@ const ApplicationsListComponent = ({ applications, onCourseClick, disabled, user
           <a
             key={app.id}
             onClick={() => {
-              onCourseClick(app) // todo: do curring here
+              onCourseClick(app) // todo: consider curring here
             }}
             href="#"
             className={cx('list-group-item list-group-item-action flex-column align-items-start', {
@@ -30,7 +30,7 @@ const ApplicationsListComponent = ({ applications, onCourseClick, disabled, user
               </h5>
               {lastUpdated && (
                 <small>
-                  <span className="oi oi-bell" /> {moment(lastUpdated).calendar()}
+                  <span className="oi oi-bell" /> {moment(lastUpdated).fromNow()}
                 </small>
               )}
             </div>

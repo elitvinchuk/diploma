@@ -1,79 +1,63 @@
 import { applicationsRef } from 'firebaseConfig'
-import times from 'lodash/times'
 import dot from 'dot-prop-immutable'
 import { types as studentActionTypes } from 'student/redux/applications'
-import dictionary from 'common/dictionary'
+import { types as tutorActionTypes } from 'tutor/redux/applications'
+import merge from 'lodash/merge'
 
-const constants = {
-  APPLY_FOR_COURSE: 'applications/APPLY_FOR_COURSE'
+const types = {
+  ADD_COMMENT: 'applications/ADD_COMMENT',
+  SET_APP_TASKS: 'applications/SET_APP_TASKS'
 }
 
 export const actions = {
-  applyForCourse: (course, tutorId) => (dispatch, getState) => {
-    const newApplication = {
-      courseId: course.id,
-      studentId: getState().auth.uid,
-      tutorId,
-      createdAt: Date.now(),
-      tasks: [],
-      status: dictionary.statuses.initial
+  addComment: (id, message, taskId) => ({
+    type: types.ADD_COMMENT,
+    payload: {
+      id,
+      message,
+      taskId
     }
+  }),
+  getApplicationDetails: appId => dispatch =>
+    // todo: consider implementing utilities for retrieving data and collection by link
+    applicationsRef
+      .doc(appId)
+      .collection('tasks')
+      .get()
+      .then(querySnapshot => {
+        const tasks = {}
 
-    const newTaskSchema = {
-      messages: [],
-      status: null,
-      attachments: null
-    }
+        querySnapshot.forEach(doc => {
+          tasks[doc.id] = doc.data()
+        })
 
-    times(course.controlWorksAmount, index => {
-      newApplication.tasks.push({
-        name: 'Контрольная работа №' + (index + 1),
-        ...newTaskSchema
+        dispatch({
+          type: types.SET_APP_TASKS,
+          payload: {
+            tasks,
+            id: appId
+          }
+        })
       })
-    })
-
-    times(course.individualWorksAmount, index => {
-      newApplication.tasks.push({
-        name: 'Индивидуальная работа №' + (index + 1),
-        ...newTaskSchema
-      })
-    })
-
-    if (course.courseProject) {
-      newApplication.tasks.push({
-        name: 'Курсовой проект',
-        ...newTaskSchema
-      })
-    }
-
-    if (course.courseWork) {
-      newApplication.tasks.push({
-        name: 'Курсовая работа',
-        ...newTaskSchema
-      })
-    }
-
-    applicationsRef.add(newApplication).then(appRef => {
-      dispatch({
-        type: constants.APPLY_FOR_COURSE,
-        payload: {
-          id: appRef.id,
-          ...newApplication
-        }
-      })
-    })
-    // todo: .catch()
-  }
 }
 
 export default (state = {}, { type, payload }) => {
   switch (type) {
-    case constants.APPLY_FOR_COURSE: {
+    case studentActionTypes.APPLY_FOR_COURSE: {
       return dot.set(state, payload.id, payload)
     }
 
-    case studentActionTypes.SET_APPLICATIONS: {
-      return { ...state, ...payload }
+    case studentActionTypes.SET_APPLICATIONS:
+    case tutorActionTypes.SET_APPLICATIONS: {
+      return merge({ ...state }, payload)
+    }
+
+    case types.SET_APP_TASKS: {
+      return dot.merge(state, `${payload.id}.tasks`, payload.tasks)
+    }
+
+    case types.ADD_COMMENT: {
+      return dot.set(state, `${payload.id}.tasks.${payload.taskId}.messages`, payload.message)
     }
 
     default:

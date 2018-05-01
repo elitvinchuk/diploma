@@ -2,16 +2,19 @@ export default {
   index: '/',
   login: '/login',
 
-  applications: '/applications',
-  application: '/applications/:id',
-  calendar: '/calendar',
-
   admin: {
     courses: '/admin/courses',
     users: '/admin/users'
   },
 
   student: {
-    courses: '/student/courses'
+    applications: '/student/applications',
+    application: '/student/applications/:id'
+  },
+
+  tutors: {
+    applications: '/tutor/applications',
+    application: '/tutor/applications/:id',
+    calendar: '/tutor/calendar'
   }
 }

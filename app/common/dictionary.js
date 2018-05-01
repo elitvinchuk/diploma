@@ -10,11 +10,10 @@ export default {
     admin: 'Администратор'
   },
   statuses: {
-    application: {
-      passed: 'Зачтено',
-      needsWork: 'На доработку',
-      pending: 'Ожидает проверки'
-    },
-    initial: 'Первичное обращение'
+    initial: 'Первичное обращение',
+    needsWork: 'На доработку',
+    pending: 'Ожидает проверки',
+    approved: 'Допуск',
+    passed: 'Зачтено'
   }
 }

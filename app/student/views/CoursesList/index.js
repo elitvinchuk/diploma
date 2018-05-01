@@ -4,16 +4,18 @@ import React from 'react'
 import { connect } from 'react-redux'
 import ApplyForCourseModal from './ApplyForCourseModal'
 import ApplicationsListComponent from './component'
-import { actions as applicationActions } from 'common/redux/applications'
 import { actions as studentActions } from 'student/redux/applications'
 import pick from 'lodash/pick'
+import isEqual from 'lodash/isEqual'
+import isEmpty from 'lodash/isEmpty'
+import routes from 'routes'
 
 const applyForCourseModalId = 'apply-for-course-modal'
 
 const mapStateToProps = state => {
   const { applications, auth, courses, users } = state
   const currentUser = users[auth.uid]
-  const assignedCoursesIds = currentUser?.courses || []
+  const assignedCoursesIds = currentUser?.courses
 
   return {
     applications,
@@ -33,45 +35,42 @@ class CoursesList extends React.Component {
     users: PropTypes.object
   }
 
+  static defaultProps = {
+    assignedCoursesIds: []
+  }
+
   constructor(props) {
     super(props)
 
-    const { assignedCoursesIds, courses } = props
-    const appliedCourses = assignedCoursesIds.map(assignedCoursesId => ({
-      ...pick(courses[assignedCoursesId], ['id', 'name'])
-    }))
+    const { assignedCoursesIds, applications, courses } = props
+    const appliedCourses = assignedCoursesIds.map(assignedCoursesId => {
+      const courseMeta = courses[assignedCoursesId]
+      const applicationId = Object.keys(applications || {}).find(
+        appId => applications[appId].courseId === assignedCoursesId
+      )
+
+      const nextAppliedCourse = pick(courseMeta, ['id', 'name'])
+
+      const appMeta = applications?.[applicationId]
+
+      if (appMeta) {
+        Object.assign(nextAppliedCourse, { applicationId, ...appMeta })
+      }
+
+      return nextAppliedCourse
+    })
 
     this.state = {
       appliedCourses,
       activeCourseId: null,
-      listDisabled: true,
+      listDisabled: !applications,
       tutorsForCourse: []
     }
   }
 
-  componentDidMount() {
-    this.props.dispatch(studentActions.getApplications())
-  }
-
   componentDidUpdate(prevProps) {
-    const { applications: apps } = this.props
-    const { appliedCourses } = this.state
-    if (prevProps.applications !== apps) {
-      const nextAppliedCourses = [...appliedCourses]
-
-      Object.keys(apps).forEach(appId => {
-        const app = apps[appId]
-        const index = nextAppliedCourses.findIndex(course => course.id === app.courseId)
-        const foundApp = nextAppliedCourses[index]
-
-        if (foundApp) {
-          nextAppliedCourses[index] = {
-            ...app,
-            ...foundApp,
-            applicationId: appId
-          }
-        }
-      })
+    if (!isEqual(prevProps.applications, this.props.applications)) {
+      const nextAppliedCourses = this.getSaturatedCourses()
 
       this.setState({
         appliedCourses: nextAppliedCourses,
@@ -80,11 +79,34 @@ class CoursesList extends React.Component {
     }
   }
 
+  getSaturatedCourses = () => {
+    const { applications: apps } = this.props
+    const { appliedCourses } = this.state
+    const nextAppliedCourses = [...appliedCourses]
+
+    Object.keys(apps).forEach(appId => {
+      const app = apps[appId]
+      const index = nextAppliedCourses.findIndex(course => course.id === app.courseId)
+      const foundApp = nextAppliedCourses[index]
+
+      if (foundApp) {
+        nextAppliedCourses[index] = {
+          ...app,
+          ...foundApp,
+          applicationId: appId
+        }
+      }
+    })
+
+    return nextAppliedCourses
+  }
+
   handleApplicationClick = activeCourse => {
     if (!this.state.listDisabled) {
       if (activeCourse.applicationId) {
-        // todo: navigate to applications
-        console.log('navigating to', activeCourse.applicationId)
+        this.props.history.push(
+          routes.student.application.replace(':id', activeCourse.applicationId)
+        )
       } else {
         this.openModal(activeCourse.id)
       }
@@ -112,8 +134,12 @@ class CoursesList extends React.Component {
   }
 
   applyForCourse = ({ tutorId }) => {
-    const { courses, dispatch } = this.props
-    dispatch(applicationActions.applyForCourse(courses[this.state.activeCourseId], tutorId))
+    const { courses, dispatch, history } = this.props
+    dispatch(studentActions.applyForCourse(courses[this.state.activeCourseId], tutorId)).then(
+      appId => {
+        history.push(routes.student.application.replace(':id', appId))
+      }
+    )
   }
 
   render() {

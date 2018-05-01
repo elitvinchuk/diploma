@@ -7,16 +7,15 @@ const config = {
   databaseURL: 'https://certificate-circuit.firebaseio.com',
   projectId: 'certificate-circuit',
   storageBucket: 'certificate-circuit.appspot.com',
-  messagingSenderId: '597184051940'
+  messagingSenderId: '597184051940',
+  timestampsInSnapshots: true
 }
 
 firebase.initializeApp(config)
 
 export const auth = firebase.auth()
 export const storageRef = firebase.storage().ref()
-
-const firestore = firebase.firestore()
-
+export const firestore = firebase.firestore()
 export const applicationsRef = firestore.collection('applications')
 export const usersRef = firestore.collection('users')
 export const coursesRef = firestore.collection('courses')

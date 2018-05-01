@@ -1,4 +1,4 @@
-import Loader from 'common/components/Loader'
+import { Loader } from 'common/components'
 import PropTypes from 'prop-types'
 import React from 'react'
 

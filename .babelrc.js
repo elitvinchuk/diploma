@@ -1,10 +1,10 @@
 module.exports = {
   plugins: [
-    'react-hot-loader/babel',
+    'react-hot-loader/babel'
   ],
   presets: [
     '@babel/env',
     '@babel/react',
-    '@babel/stage-0'
+    ['@babel/stage-1', { decoratorsLegacy: true }]
   ]
 }

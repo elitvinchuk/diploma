@@ -7,7 +7,7 @@ const types = {
 }
 
 export const actions = {
-  getUsers: () => dispatch => {
+  getUsers: () => dispatch =>
     // todo: consider adding role param here to fetch users per role
     usersRef.get().then(usersSnapshot => {
       const usersMap = {}
@@ -20,8 +20,7 @@ export const actions = {
         type: types.SET_USERS,
         payload: usersMap
       })
-    })
-  },
+    }),
   updateUser: (userId, data) => dispatch =>
     usersRef
       .doc(userId)
