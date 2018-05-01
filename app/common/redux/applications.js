@@ -9,10 +9,10 @@ const constants = {
 }
 
 export const actions = {
-  applyForCourse: (course, studentId, tutorId) => dispatch => {
+  applyForCourse: (course, tutorId) => (dispatch, getState) => {
     const newApplication = {
       courseId: course.id,
-      studentId,
+      studentId: getState().auth.uid,
       tutorId,
       createdAt: Date.now(),
       tasks: [],

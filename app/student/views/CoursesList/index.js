@@ -3,10 +3,10 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
 import ApplyForCourseModal from './ApplyForCourseModal'
-import CoursesListComponent from './component'
+import ApplicationsListComponent from './component'
 import { actions as applicationActions } from 'common/redux/applications'
-import { actions as studentActions, selectors } from 'student/redux/applications'
-import { applicationsByCourse } from 'student/utils'
+import { actions as studentActions } from 'student/redux/applications'
+import pick from 'lodash/pick'
 
 const applyForCourseModalId = 'apply-for-course-modal'
 
@@ -16,30 +16,37 @@ const mapStateToProps = state => {
   const assignedCoursesIds = currentUser?.courses || []
 
   return {
+    applications,
+    assignedCoursesIds,
     courses,
-    users,
-    apps: applications,
-    appliedCourses: selectors.getApplicationsMeta(state, assignedCoursesIds, applicationsByCourse),
-    uid: auth.uid
+    users
   }
 }
 
 @connect(mapStateToProps)
 class CoursesList extends React.Component {
   static propTypes = {
-    apps: PropTypes.object,
-    auth: PropTypes.object,
-    appliedCourses: PropTypes.array,
+    applications: PropTypes.object,
+    assignedCoursesIds: PropTypes.array,
     courses: PropTypes.object,
     dispatch: PropTypes.func,
-    uid: PropTypes.string,
     users: PropTypes.object
   }
 
-  state = {
-    activeCourseId: null,
-    appsByCourse: {},
-    tutorsForCourse: []
+  constructor(props) {
+    super(props)
+
+    const { assignedCoursesIds, courses } = props
+    const appliedCourses = assignedCoursesIds.map(assignedCoursesId => ({
+      ...pick(courses[assignedCoursesId], ['id', 'name'])
+    }))
+
+    this.state = {
+      appliedCourses,
+      activeCourseId: null,
+      listDisabled: true,
+      tutorsForCourse: []
+    }
   }
 
   componentDidMount() {
@@ -47,20 +54,40 @@ class CoursesList extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { apps } = this.props
-    if (prevProps.apps !== apps) {
+    const { applications: apps } = this.props
+    const { appliedCourses } = this.state
+    if (prevProps.applications !== apps) {
+      const nextAppliedCourses = [...appliedCourses]
+
+      Object.keys(apps).forEach(appId => {
+        const app = apps[appId]
+        const index = nextAppliedCourses.findIndex(course => course.id === app.courseId)
+        const foundApp = nextAppliedCourses[index]
+
+        if (foundApp) {
+          nextAppliedCourses[index] = {
+            ...app,
+            ...foundApp,
+            applicationId: appId
+          }
+        }
+      })
+
       this.setState({
-        appsByCourse: applicationsByCourse(apps)
+        appliedCourses: nextAppliedCourses,
+        listDisabled: false
       })
     }
   }
 
-  handleApplicationClick = activeCourseId => {
-    if (this.state.appsByCourse[activeCourseId]) {
-      // todo: navigate to applications
-      console.log('navigating')
-    } else {
-      this.openModal(activeCourseId)
+  handleApplicationClick = activeCourse => {
+    if (!this.state.listDisabled) {
+      if (activeCourse.applicationId) {
+        // todo: navigate to applications
+        console.log('navigating to', activeCourse.applicationId)
+      } else {
+        this.openModal(activeCourse.id)
+      }
     }
   }
 
@@ -85,19 +112,21 @@ class CoursesList extends React.Component {
   }
 
   applyForCourse = ({ tutorId }) => {
-    const { courses, dispatch, uid } = this.props
-    dispatch(applicationActions.applyForCourse(courses[this.state.activeCourseId], uid, tutorId))
+    const { courses, dispatch } = this.props
+    dispatch(applicationActions.applyForCourse(courses[this.state.activeCourseId], tutorId))
   }
 
   render() {
-    const { activeCourseId, tutorsForCourse } = this.state
-    const { appliedCourses, courses } = this.props
+    const { appliedCourses, activeCourseId, listDisabled, tutorsForCourse } = this.state
+    const { courses, users } = this.props
 
     return (
       <>
-        <CoursesListComponent
-          courses={appliedCourses}
+        <ApplicationsListComponent
+          applications={appliedCourses}
+          disabled={listDisabled}
           onCourseClick={this.handleApplicationClick}
+          users={users}
         />
 
         <ApplyForCourseModal
