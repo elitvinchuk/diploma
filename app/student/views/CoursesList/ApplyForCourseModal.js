@@ -2,6 +2,7 @@ import { Modal } from 'common/components'
 import dict from 'common/dictionary'
 import { Select } from 'common/form-controls'
 import { objectToValue } from 'common/utils/converters'
+import { required } from 'common/utils/validators'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { Field } from 'redux-form'
@@ -15,11 +16,12 @@ const ApplyForCourseModal = ({ activeCourse, form, onRequestClose, onSubmit, tut
     submitButtonText="Зарегистрироваться на курс"
   >
     <Field
-      name="tutor"
+      name="tutorId"
       component={Select}
       label="Выбор преподователя"
       normalize={objectToValue}
       options={tutorsForCourse}
+      validate={required}
     />
     <dl className="row">
       <dt className="col-sm-5">Тип дисциплины</dt>

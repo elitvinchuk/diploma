@@ -9,7 +9,9 @@ const CoursesListComponent = ({ courses, onCourseClick }) => (
       {courses.map(course => (
         <a
           key={course.id}
-          onClick={onCourseClick(course.id)}
+          onClick={() => {
+            onCourseClick(course.id) // todo: do curring here
+          }}
           href="#"
           className="list-group-item list-group-item-action"
         >

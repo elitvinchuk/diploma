@@ -17,9 +17,10 @@ export const storageRef = firebase.storage().ref()
 
 const firestore = firebase.firestore()
 
+export const applicationsRef = firestore.collection('applications')
 export const usersRef = firestore.collection('users')
 export const coursesRef = firestore.collection('courses')
 
-export const FieldValue = firebase.firestore.FieldValue
+// export const FieldValue = firebase.firestore.FieldValue
 
 export default firebase

@@ -1,7 +1,7 @@
 import { Modal } from 'common/components'
 import dictionary from 'common/dictionary'
 import { Checkbox, File, Input, Select } from 'common/form-controls'
-import { arrayToObject, flattenArray, objectToArray, objectToValue } from 'common/utils/converters'
+import { flattenArray, objectToArray, objectToValue } from 'common/utils/converters'
 import { required } from 'common/utils/validators'
 import React from 'react'
 import PropTypes from 'prop-types'
@@ -93,7 +93,7 @@ const CourseEditModal = ({ course, form, onRequestClose, onSubmit, tutorsArray }
     <Field
       name="type"
       component={Select}
-      label="Тип дисциплины"
+      label="Вид контроля"
       normalize={objectToValue}
       options={examTypes}
       // validate={required}
