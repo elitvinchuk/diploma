@@ -12,6 +12,7 @@ import r from 'routes'
 import { Application, ApplicationsList, Calendar } from 'tutor/views'
 import { ApplicationItem, StudentCoursesList } from 'student/views'
 import { actions as studentActions } from 'student/redux/applications'
+import { actions as tutorActions } from 'tutor/redux/applications'
 
 @connect(state => ({
   user: selectors.getAuthenticatedUser(state)
@@ -26,8 +27,15 @@ class HomeComponent extends React.Component {
     const { dispatch } = this.props
     dispatch(coursesActions.getCourses())
     dispatch(usersActions.getUsers()).then(() => {
-      if (this.props.user.roles['student']) {
+      const {
+        user: { roles }
+      } = this.props
+      if (roles['student']) {
         dispatch(studentActions.getApplications())
+      }
+
+      if (roles['tutor']) {
+        dispatch(tutorActions.getApplications())
       }
     })
   }

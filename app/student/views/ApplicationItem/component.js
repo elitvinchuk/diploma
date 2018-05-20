@@ -33,7 +33,6 @@ const ApplicationItemComponent = ({ application, course, tutor }) => (
     </div>
 
     <Tasks tasks={application.tasks} />
-
   </>
 )
 
