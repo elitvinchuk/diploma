@@ -6,6 +6,7 @@ import merge from 'lodash/merge'
 
 const types = {
   ADD_COMMENT: 'applications/ADD_COMMENT',
+  CHANGE_TASK_STATUS: 'applications/CHANGE_TASK_STATUS',
   SET_APP_TASKS: 'applications/SET_APP_TASKS'
 }
 
@@ -18,6 +19,20 @@ export const actions = {
       taskId
     }
   }),
+  changeTaskStatus: (appId, taskId, status) => dispatch =>
+    applicationsRef
+      .doc(`${appId}/tasks/${taskId}`)
+      .update({ status })
+      .then(() => {
+        dispatch({
+          type: types.CHANGE_TASK_STATUS,
+          payload: {
+            id: appId,
+            taskId,
+            status
+          }
+        })
+      }),
   getApplicationDetails: appId => dispatch =>
     // todo: consider implementing utilities for retrieving data and collection by link
     applicationsRef
@@ -54,6 +69,10 @@ export default (state = {}, { type, payload }) => {
 
     case types.SET_APP_TASKS: {
       return dot.merge(state, `${payload.id}.tasks`, payload.tasks)
+    }
+
+    case types.CHANGE_TASK_STATUS: {
+      return dot.set(state, `${payload.id}.tasks.${payload.taskId}.status`, payload.status)
     }
 
     case types.ADD_COMMENT: {

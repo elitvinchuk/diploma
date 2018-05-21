@@ -47,7 +47,8 @@ export const actions = {
 
       times(course.controlWorksAmount, index => {
         const controlWorkData = {
-          name: 'Контрольная работа №' + (index + 1)
+          name: 'Контрольная работа №' + (index + 1),
+          status: dictionary.statuses.initial
         }
 
         promises.push(
@@ -57,7 +58,8 @@ export const actions = {
 
       times(course.individualWorksAmount, index => {
         const individualWorkData = {
-          name: 'Индивидуальная работа №' + (index + 1)
+          name: 'Индивидуальная работа №' + (index + 1),
+          status: dictionary.statuses.initial
         }
 
         promises.push(
@@ -67,7 +69,8 @@ export const actions = {
 
       if (course.courseProject) {
         const courseProjectData = {
-          name: 'Курсовой проект'
+          name: 'Курсовой проект',
+          status: dictionary.statuses.initial
         }
 
         promises.push(
@@ -77,7 +80,8 @@ export const actions = {
 
       if (course.courseWork) {
         const courseWorkData = {
-          name: 'Курсовая работа'
+          name: 'Курсовая работа',
+          status: dictionary.statuses.initial
         }
 
         promises.push(

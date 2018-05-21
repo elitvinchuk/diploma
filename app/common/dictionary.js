@@ -12,8 +12,7 @@ export default {
   statuses: {
     initial: 'Первичное обращение',
     needsWork: 'На доработку',
-    pending: 'Ожидает проверки',
-    approved: 'Допуск',
-    passed: 'Зачтено'
+    inReview: 'Ожидает проверки',
+    approved: 'Зачтено'
   }
 }
