@@ -4,7 +4,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const common = require('./webpack.common')
 
 const extractSass = new ExtractTextPlugin({
-  filename: '[name].[contenthash].css'
+  filename: '[name].[md5:contenthash:hex:20].css'
 })
 
 module.exports = merge(common, {
