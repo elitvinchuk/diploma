@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import ApplicationsListComponent from './component'
-import { actions } from 'tutor/redux/applications'
 import { connect } from 'react-redux'
 import pick from 'lodash/pick'
 
@@ -10,10 +9,6 @@ class ApplicationsList extends React.Component {
   static propTypes = {
     apps: PropTypes.object,
     dispatch: PropTypes.func.isRequired
-  }
-
-  componentDidMount() {
-    this.props.dispatch(actions.getApplications())
   }
 
   render() {
