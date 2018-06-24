@@ -1,5 +1,5 @@
 import { auth, usersRef } from 'firebaseConfig'
-import { pick } from 'lodash'
+import { types as appTypes } from './applications'
 
 export const constants = {
   ANONYMOUS: 'auth/ANONYMOUS',
@@ -22,13 +22,17 @@ export const actions = {
       type: constants.ATTEMPTING_LOGIN
     })
 
+    dispatch({
+      type: appTypes.CLEAR
+    })
+
     auth.signOut()
   },
 
   listenToAuthChanges: () => dispatch => {
     auth.onAuthStateChanged(auth => {
       if (auth) {
-        /*const userRef = usersRef.doc(auth.uid)
+        const userRef = usersRef.doc(auth.uid)
 
         userRef.get().then(doc => {
           const user = doc.data()
@@ -36,30 +40,24 @@ export const actions = {
           if (user) {
             dispatch({
               type: constants.SIGNED_IN,
-              payload: {
-                ...user,
-                uid: doc.id
-              }
+              payload: doc.id
             })
           } else {
-            // todo: add last sign in time
             const newUserData = {
-              ...pick(auth, ['displayName', 'email', 'photoURL']),
-              roles: []
+              email: auth.email,
+              roles: {}
             }
 
-            // todo: deal with dat merge
-            userRef.set(newUserData, { merge: true }).then(() => {
-              dispatch({
-                type: constants.SIGNED_IN,
-                payload: newUserData
+            usersRef
+              .doc(auth.uid)
+              .set(newUserData)
+              .then(() => {
+                dispatch({
+                  type: constants.SIGNED_IN,
+                  payload: auth.uid
+                })
               })
-            })
           }
-        })*/
-        dispatch({
-          type: constants.SIGNED_IN,
-          payload: auth.uid
         })
       } else {
         dispatch({

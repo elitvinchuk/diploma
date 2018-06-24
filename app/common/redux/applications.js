@@ -6,12 +6,13 @@ import merge from 'lodash/merge'
 import cloneDeep from 'lodash/cloneDeep'
 import dictionary from 'common/dictionary'
 
-const types = {
+export const types = {
   ADD_COMMENT: 'applications/ADD_COMMENT',
   CHANGE_TASK_STATUS: 'applications/CHANGE_TASK_STATUS',
   SET_APP_TASKS: 'applications/SET_APP_TASKS',
   ARRANGE_EXAM_DATE: 'applications/ARRANGE_EXAM_DATE',
-  SET_EXAM_PASS: 'applications/SET_EXAM_PASS'
+  SET_EXAM_PASS: 'applications/SET_EXAM_PASS',
+  CLEAR: 'applications/CLEAR'
 }
 
 export const actions = {
@@ -129,6 +130,10 @@ export default (state = {}, { type, payload }) => {
       clone[payload.id].mark = payload.mark
 
       return clone
+    }
+
+    case types.CLEAR: {
+      return {}
     }
 
     default:

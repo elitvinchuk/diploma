@@ -5,14 +5,14 @@ import { required } from 'common/utils/validators'
 import { bool, object } from 'prop-types'
 import React from 'react'
 import { Redirect } from 'react-router-dom'
-import { Field, propTypes } from 'redux-form'
+import { Field } from 'redux-form'
 import routes from 'routes'
 import './styles'
 
 const LoginComponent = ({ auth, attemptingLogin, error, handleSubmit, location }) => (
   <div className="d-flex h-100 justify-content-center align-items-center">
     {auth.redirectToReferrer && (
-      <Redirect to={location.state ? location.state.from : routes.applications} />
+      <Redirect to={location.state ? location.state.from : routes.index} />
     )}
     {attemptingLogin ? (
       <Loader fullscreen />

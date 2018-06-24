@@ -62,7 +62,7 @@ const CourseEditModal = ({ course, form, onRequestClose, onSubmit, tutorsArray }
       options={tutorsArray}
       validate={required}
     />
-    <Field name="manual" component={File} label="Методические пособия" validate={required} />
+    <Field name="manual" component={File} label="Методические пособия" />
     <div className="form-row">
       <Field
         name="controlWorksAmount"

@@ -27,6 +27,7 @@ class HomeComponent extends React.Component {
     const { dispatch } = this.props
     dispatch(coursesActions.getCourses())
     dispatch(usersActions.getUsers()).then(() => {
+
       const {
         user: { roles }
       } = this.props
@@ -48,9 +49,9 @@ class HomeComponent extends React.Component {
     }
 
     // todo: LOW consider moving to cdu
-    const isAdmin = this.props.user.roles['admin']
-    const isStudent = this.props.user.roles['student']
-    const isTutor = this.props.user.roles['tutor']
+    const isAdmin = user.roles['admin']
+    const isStudent = user.roles['student']
+    const isTutor = user.roles['tutor']
 
     const redirectRoute = isAdmin ? r.admin.courses : isTutor ? r.courses : r.student.courses
 
