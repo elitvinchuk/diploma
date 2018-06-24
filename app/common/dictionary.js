@@ -13,6 +13,7 @@ export default {
     initial: 'Первичное обращение',
     needsWork: 'На доработку',
     inReview: 'Ожидает проверки',
+    arranged: 'Назначена сдача',
     approved: 'Зачтено'
   }
 }

@@ -8,6 +8,10 @@ const metaMap = {
     icon: '',
     color: 'info'
   },
+  [dictionary.statuses.arranged]: {
+    icon: 'oi-people',
+    color: 'secondary'
+  },
   [dictionary.statuses.needsWork]: {
     icon: 'oi-pencil',
     color: 'warning'
@@ -22,13 +26,14 @@ const metaMap = {
   }
 }
 
-const Label = ({ status }) => (
-  <span className={`badge badge-${metaMap[status].color}`} title={status}>
+const Label = ({ className, status }) => (
+  <span className={`${className} badge badge-${metaMap[status].color}`} title={status}>
     {status} <span className={cx('oi', metaMap[status].icon)} />
   </span>
 )
 
 Label.propTypes = {
+  className: PropTypes.string,
   status: PropTypes.string.isRequired
 }
 

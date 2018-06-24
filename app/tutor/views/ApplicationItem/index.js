@@ -19,6 +19,12 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => ({
   getApplicationDetails() {
     dispatch(actions.getApplicationDetails(ownProps.match.params.id))
+  },
+  onExamDateSelect(date) {
+    dispatch(actions.setExamDate(ownProps.match.params.id, date))
+  },
+  onExamPass(mark) {
+    dispatch(actions.setExamPass(ownProps.match.params.id, mark || true))
   }
 })
 

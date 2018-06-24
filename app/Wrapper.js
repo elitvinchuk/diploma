@@ -8,6 +8,7 @@ import { ConnectedRouter } from 'react-router-redux'
 import r from 'routes'
 import store, { history } from 'store'
 import 'common/styles'
+import 'react-datepicker/dist/react-datepicker.css'
 
 store.dispatch(actions.listenToAuthChanges())
 

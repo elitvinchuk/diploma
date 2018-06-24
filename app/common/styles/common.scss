@@ -27,3 +27,21 @@
   }
 }
 // endregion
+
+.react-datepicker__time-list {
+  padding: 0;
+}
+
+.arrange-exam {
+  display: flex;
+
+  input {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  button {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+  }
+}

@@ -4,6 +4,7 @@ import map from 'lodash/map'
 import { Link } from 'react-router-dom'
 import routes from 'routes'
 import moment from 'moment'
+import { Label } from 'common/components'
 
 const ApplicationsListComponent = ({ applications, courses, users }) => (
   <>
@@ -26,10 +27,9 @@ const ApplicationsListComponent = ({ applications, courses, users }) => (
         >
           <div className="d-flex w-100 justify-content-between">
             <h5 className="mb-1">
-              {users[app.studentId].displayName}{' '}
-              <span className="badge badge-success">{app.status}</span>
+              {users[app.studentId].displayName} <Label status={app.status} />
             </h5>
-            <small>{moment(app.createdAt).fromNow()}</small>
+            {app.examDate && <small>{moment().to(app.examDate)}</small>}
           </div>
           <p className="mb-1">{courses[app.courseId].name}</p>
           {/*<small>Donec id elit non mi porta.</small>*/}
